@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="">
 
@@ -357,6 +356,19 @@
                 </div>
             </div>
 
+            <!-- Timeliness Analytics Section -->
+            <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Timeliness Performance Analytics</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="lg:col-span-3 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="h-80 w-full"><canvas id="timeliness-chart"></canvas></div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-2xl">
+                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-3">Legends & Notations</h4>
+                        <div id="timeliness-legend" class="space-y-4 text-xs"></div>
+                    </div>
+                </div>
+
             <!-- GEAR Prices Section -->
             <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Green Energy Auction
@@ -463,15 +475,33 @@
                 <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[4%]" data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[5%]" data-sort="year">Year <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]" data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[14%]" data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[25%]" data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[23%]" data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]" data-sort="capacity">Capacity (MW) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]" data-sort="price">Price (PhP/kWh) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]" data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[4%]"
+                                data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[5%]"
+                                data-sort="year">Year <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]"
+                                data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[14%]"
+                                data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[25%]"
+                                data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[23%]"
+                                data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]"
+                                data-sort="capacity">Capacity (MW) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]"
+                                data-sort="price">Price (PhP/kWh) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]"
+                                data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
                         </tr>
                     </thead>
                     <tbody id="projects-table-body"
@@ -868,7 +898,7 @@
         let sortState = { column: 'year', direction: 'asc' };
         let map, markerLayer;
         let currentFilteredProjects = [];
-        let geaRoundChart, techDistChart, targetChart, timelineChart, priceTrendChart, gridDistChart;
+        let geaRoundChart, techDistChart, targetChart, timelineChart, priceTrendChart, gridDistChart, timelinessChart;
         let devModalChart, comparisonChart1, comparisonChart2;
 
         // --- FUNCTIONS ---
@@ -1172,6 +1202,113 @@
             regionalDominanceEl.innerHTML = html || '<p class="text-center text-gray-500">No data for selected filters.</p>';
         }
 
+        function updateTimelinessAnalytics(projectList) {
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            const rounds = [1, 2, 3, 4, 5, 6];
+            const timelyData = [];
+            const delayedData = [];
+            const terminatedData = [];
+            const labels = [];
+            
+            rounds.forEach(round => {
+                const roundP = projectList.filter(p => p.gea === round);
+                const dueProjects = roundP.filter(p => getProjectStatus(p) !== 'ongoing');
+                const operation = dueProjects.filter(p => getProjectStatus(p) === 'operation').length;
+                const delayed = dueProjects.filter(p => getProjectStatus(p) === 'delayed').length;
+                const terminated = dueProjects.filter(p => getProjectStatus(p) === 'terminated').length;
+                const totalDue = dueProjects.length;
+
+                labels.push(`GEA-${round}`);
+                if (totalDue > 0) {
+                    timelyData.push((operation / totalDue) * 100);
+                    delayedData.push((delayed / totalDue) * 100);
+                    terminatedData.push((terminated / totalDue) * 100);
+                } else {
+                    timelyData.push(null);
+                    delayedData.push(null);
+                    terminatedData.push(null);
+                }
+            });
+
+            if (timelinessChart) timelinessChart.destroy();
+            const ctx = document.getElementById('timeliness-chart');
+            if (!ctx) return;
+            
+            timelinessChart = new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Timely (Operation)', data: timelyData, backgroundColor: '#10B981', borderColor: isDarkMode ? '#111827' : '#fff', borderWidth: 1 },
+                        { label: 'Delayed', data: delayedData, backgroundColor: '#F59E0B', borderColor: isDarkMode ? '#111827' : '#fff', borderWidth: 1 },
+                        { label: 'Terminated', data: terminatedData, backgroundColor: '#EF4444', borderColor: isDarkMode ? '#111827' : '#fff', borderWidth: 1 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, grid: { display: false }, ticks: { color: isDarkMode ? '#9ca3af' : '#4b5563' } },
+                        y: { stacked: true, max: 100, title: { display: true, text: 'Percentage (%)', color: isDarkMode ? '#9ca3af' : '#4b5563' }, ticks: { callback: v => `${v}%`, color: isDarkMode ? '#9ca3af' : '#4b5563' } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15, color: isDarkMode ? '#f9fafb' : '#1f2937' } },
+                        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw ? c.raw.toFixed(1) : 0}%` } }
+                    }
+                }
+            });
+
+            const legendEl = document.getElementById('timeliness-legend');
+            if (legendEl) {
+                let html = `
+                    <div class="space-y-3">
+                        <div>
+                             <span class="inline-block w-2.5 h-2.5 bg-green-500 rounded-full mr-1.5"></span>
+                             <span class="font-bold text-green-600 dark:text-green-400">Timely</span>: Completed and IN OPERATION.
+                        </div>
+                        <div>
+                             <span class="inline-block w-2.5 h-2.5 bg-amber-500 rounded-full mr-1.5"></span>
+                             <span class="font-bold text-amber-500">Delayed</span>: Past target year and not operational.
+                        </div>
+                        <div>
+                             <span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full mr-1.5"></span>
+                             <span class="font-bold text-red-500">Terminated</span>: Cancelled/Terminated projects.
+                        </div>
+                        <hr class="border-gray-200 dark:border-gray-700">
+                        <div>
+                             <p class="font-semibold text-gray-400">Notations:</p>
+                             <p class="text-[10px] mt-1">Formula: <span class="font-mono bg-gray-100 dark:bg-gray-800 p-0.5 rounded">(Operation / Due) * 100</span></p>
+                             <p class="text-[10px] text-gray-400 mt-1 italic">* Excludes "On-going" status projects.</p>
+                        </div>
+                        <div class="mt-3">
+                            <h5 class="font-bold text-gray-700 dark:text-gray-300 mb-1.5">Per-Round Summary</h5>
+                            <div class="space-y-1">
+                `;
+                rounds.forEach(round => {
+                    const roundP = projectList.filter(p => p.gea === round);
+                    const dueCount = roundP.filter(p => getProjectStatus(p) !== 'ongoing').length;
+                    const ongoingCount = roundP.filter(p => getProjectStatus(p) === 'ongoing').length;
+                    const opCount = roundP.filter(p => getProjectStatus(p) === 'operation').length;
+                    const pct = dueCount > 0 ? ((opCount / dueCount) * 100).toFixed(1) : '---';
+
+                    if (dueCount > 0 || ongoingCount > 0) {
+                        html += `
+                            <div class="flex justify-between items-center bg-gray-50 dark:bg-gray-800/50 p-1.5 rounded-lg border border-gray-100 dark:border-gray-700">
+                                <span class="font-black text-gray-700 dark:text-gray-200">GEA-${round}</span>
+                                <div class="flex gap-2 text-right">
+                                    <div class="flex flex-col"><span class="text-[9px] text-gray-400">Due</span><span class="font-bold">${dueCount}</span></div>
+                                    <div class="flex flex-col"><span class="text-[9px] text-blue-400">Ong</span><span class="font-bold text-blue-500">${ongoingCount}</span></div>
+                                    <div class="flex flex-col text-center"><span class="text-[9px] text-green-500">Timely</span><span class="font-black text-green-600 dark:text-green-400">${pct === '---' ? 'N/A' : pct + '%'}</span></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                html += `</div></div></div>`;
+                legendEl.innerHTML = html;
+            }
+        }
+
         function populateFilters() {
             const years = [...new Set(projects.map(p => p.year))].sort((a, b) => a - b);
             yearFilter.innerHTML = '<option value="all">All Years</option>';
@@ -1417,6 +1554,7 @@
             updateMap(currentFilteredProjects);
             updateLeaderboard(currentFilteredProjects);
             updateRegionalDominance(currentFilteredProjects);
+            updateTimelinessAnalytics(currentFilteredProjects);
         }
 
         function resetFilters() {

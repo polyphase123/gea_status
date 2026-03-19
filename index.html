@@ -369,6 +369,42 @@
                     </div>
                 </div>
 
+            </div></div><!-- Analytics Injection -->
+
+                <!-- Advanced Market Insights -->
+                <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Advanced Market Insights</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                             <span class="text-[10px] text-gray-500 uppercase font-bold">Top 3 Developers Market Share</span>
+                             <div id="market-concentration" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0%</div>
+                         </div>
+                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                             <span class="text-[10px] text-gray-500 uppercase font-bold">Average Plant Size</span>
+                             <div id="avg-size-plant" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0.0 MW</div>
+                         </div>
+                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                             <span class="text-[10px] text-gray-500 uppercase font-bold">Peak Grid loading node</span>
+                             <div id="dense-province" class="text-lg font-black text-amber-600 dark:text-amber-400 mt-1">None</div>
+                         </div>
+                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                             <span class="text-[10px] text-gray-500 uppercase font-bold">Operational Success Ratio</span>
+                             <div id="op-success-ratio" class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">0%</div>
+                         </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                         <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
+                              <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Capacity Scaling factor over Rounds (MW)</h4>
+                              <div class="h-64"><canvas id="scale-factor-chart"></canvas></div>
+                         </div>
+                         <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
+                              <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Commissioning Timeline Pipeline schedule</h4>
+                              <div class="h-64"><canvas id="pipeline-chart"></canvas></div>
+                         </div>
+                    </div>
+                </div>
+    
             <!-- GEAR Prices Section -->
             <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Green Energy Auction
@@ -1321,6 +1357,71 @@
             }
         }
 
+        
+        let scaleChart = null;
+        let pipelineChart = null;
+
+        function updateAdvancedAnalytics(projectList) {
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            const totalCap = projectList.reduce((acc, p) => acc + (p.capacity || 0), 0);
+            
+            // 1. Top 3 Dev Share
+            const devCap = {};
+            projectList.forEach(p => { if (p.developer) devCap[p.developer] = (devCap[p.developer] || 0) + p.capacity; });
+            const sortedDev = Object.entries(devCap).sort((a,b) => b[1] - a[1]);
+            let top3Share = 0;
+            if (sortedDev.length > 0 && totalCap > 0) {
+                 const sum = sortedDev.slice(0, 3).reduce((acc, c) => acc + c[1], 0);
+                 top3Share = (sum / totalCap) * 100;
+            }
+            document.getElementById('market-concentration').innerText = top3Share.toFixed(1) + '%';
+            
+            // 2. Avg Size
+            const avgSize = projectList.length > 0 ? totalCap / projectList.length : 0;
+            document.getElementById('avg-size-plant').innerText = avgSize.toFixed(1) + ' MW';
+            
+            // 3. Peak grid
+            const gridCap = {};
+            projectList.forEach(p => { if (p.grid) gridCap[p.grid] = (gridCap[p.grid] || 0) + p.capacity; });
+            const topGrid = Object.entries(gridCap).sort((a,b) => b[1] - a[1])[0];
+            document.getElementById('dense-province').innerText = topGrid ? topGrid[0] : 'None';
+            
+            // 4. Operation Success
+            const due = projectList.filter(p => p.isCod !== 'terminated' && p.year <= 2025);
+            const ops = due.filter(p => p.isCod === true).length;
+            const successRatio = due.length > 0 ? (ops / due.length) * 100 : 0;
+            document.getElementById('op-success-ratio').innerText = successRatio.toFixed(1) + '%';
+            
+            // Charts calculate
+            const rounds = [1, 2, 3, 4];
+            const avgSizeData = rounds.map(r => {
+                 const roundP = projectList.filter(p => p.gea === r);
+                 if (roundP.length === 0) return 0;
+                 return roundP.reduce((acc, c) => acc + c.capacity, 0) / roundP.length;
+            });
+            
+            const yearMap = {};
+            projectList.forEach(p => { if (p.year) yearMap[p.year] = (yearMap[p.year] || 0) + p.capacity; });
+            const years = Object.keys(yearMap).sort((a,b) => a-b);
+            const pipelineData = years.map(y => yearMap[y]);
+
+            const ctx1 = document.getElementById('scale-factor-chart').getContext('2d');
+            if (scaleChart) scaleChart.destroy();
+            scaleChart = new Chart(ctx1, {
+                 type: 'bar',
+                 data: { labels: rounds.map(r => `GEA-${r}`), datasets: [{ label: 'Average Size (MW)', data: avgSizeData, backgroundColor: '#10B981', borderRadius: 8 }] },
+                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: isDarkMode ? '#374151' : '#f3f4f6' } } } }
+            });
+            
+            const ctx2 = document.getElementById('pipeline-chart').getContext('2d');
+            if (pipelineChart) pipelineChart.destroy();
+            pipelineChart = new Chart(ctx2, {
+                 type: 'line',
+                 data: { labels: years, datasets: [{ label: 'Pipelined Capacity (MW)', data: pipelineData, borderColor: '#3B82F6', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 }] },
+                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: isDarkMode ? '#374151' : '#f3f4f6' } } } }
+            });
+        }
+    
         function populateFilters() {
             const years = [...new Set(projects.map(p => p.year))].sort((a, b) => a - b);
             yearFilter.innerHTML = '<option value="all">All Years</option>';
@@ -1567,6 +1668,7 @@
             updateLeaderboard(currentFilteredProjects);
             updateRegionalDominance(currentFilteredProjects);
             updateTimelinessAnalytics(currentFilteredProjects);
+            updateAdvancedAnalytics(currentFilteredProjects);
         }
 
         function resetFilters() {

@@ -360,8 +360,14 @@
             <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Timeliness Performance Analytics</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                        <div class="h-80 w-full"><canvas id="timeliness-chart"></canvas></div>
+                    <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+                        <div class="h-80 w-full mb-6"><canvas id="timeliness-chart"></canvas></div>
+                        <div class="flex-grow bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-4 text-sm text-center uppercase tracking-wider">Technologies Most Likely Delayed</h4>
+                            <div id="delayed-tech-list" class="overflow-y-auto max-h-60 pr-2 space-y-4">
+                                <!-- JS will populate this -->
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-2xl">
                         <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-3">Legends & Notations</h4>
@@ -614,6 +620,7 @@
         function getProjectStatus(p) {
             if (p.isCod === 'terminated') return 'terminated';
             if (p.isCod === true) return 'operation';
+            if (!p.isCod && p.gea >= 3) return 'ongoing'; // GEA-3 and GEA-4 are exempt from typical delayed evaluation
             if (!p.isCod && p.year <= 2025) return 'delayed';
             return 'ongoing';
         }
@@ -1335,18 +1342,32 @@
                     const dueCount = roundP.filter(p => getProjectStatus(p) !== 'ongoing').length;
                     const ongoingCount = roundP.filter(p => getProjectStatus(p) === 'ongoing').length;
                     const opCount = roundP.filter(p => getProjectStatus(p) === 'operation').length;
+                    const delayedCount = roundP.filter(p => getProjectStatus(p) === 'delayed').length;
                     const termCount = roundP.filter(p => getProjectStatus(p) === 'terminated').length;
+                    const totalCap = roundP.reduce((sum, p) => sum + p.capacity, 0);
+                    const opCap = roundP.filter(p => getProjectStatus(p) === 'operation').reduce((sum, p) => sum + p.capacity, 0);
                     const pct = dueCount > 0 ? ((opCount / dueCount) * 100).toFixed(1) : '---';
 
                     if (dueCount > 0 || ongoingCount > 0) {
                         html += `
-                            <div class="flex justify-between items-center bg-gray-50 dark:bg-gray-800/40 p-2 rounded-xl border border-gray-100 dark:border-gray-700">
-                                <span class="font-black text-gray-800 dark:text-gray-100 font-mono">GEA-${round}</span>
-                                <div class="grid grid-cols-4 gap-3 text-center">
-                                    <div class="flex flex-col"><span class="text-[9px] text-gray-400">Due</span><span class="font-bold text-gray-600 dark:text-gray-300">${dueCount}</span></div>
-                                    <div class="flex flex-col"><span class="text-[9px] text-blue-400">Ong</span><span class="font-bold text-blue-500">${ongoingCount}</span></div>
-                                    <div class="flex flex-col"><span class="text-[9px] text-red-400">Term</span><span class="font-bold text-red-500">${termCount}</span></div>
-                                    <div class="flex flex-col bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded-lg"><span class="text-[8px] text-green-600 font-semibold">Timely</span><span class="font-black text-green-600 dark:text-green-400 text-xs">${pct === '---' ? 'N/A' : pct + '%'}</span></div>
+                            <div class="flex flex-col bg-gray-50 dark:bg-gray-800/40 p-3 rounded-xl border border-gray-100 dark:border-gray-700 space-y-2 shadow-sm">
+                                <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-1.5">
+                                    <span class="font-black text-gray-800 dark:text-gray-100 font-mono text-sm">GEA-${round}</span>
+                                    <span class="text-[10px] text-gray-400 font-medium">${formatNumber(totalCap, 0)} MW Total</span>
+                                </div>
+                                <div class="grid grid-cols-5 gap-1.5 text-center text-[10px]">
+                                    <div class="flex flex-col"><span class="text-gray-400 font-semibold mb-0.5">Due</span><span class="font-bold text-gray-700 dark:text-gray-300">${dueCount}</span></div>
+                                    <div class="flex flex-col"><span class="text-green-500 font-semibold mb-0.5">Op</span><span class="font-bold text-green-600">${opCount}</span></div>
+                                    <div class="flex flex-col"><span class="text-amber-500 font-semibold mb-0.5">Delay</span><span class="font-bold text-amber-500">${delayedCount}</span></div>
+                                    <div class="flex flex-col"><span class="text-red-500 font-semibold mb-0.5">Term</span><span class="font-bold text-red-500">${termCount}</span></div>
+                                    <div class="flex flex-col"><span class="text-blue-500 font-semibold mb-0.5">Ong</span><span class="font-bold text-blue-500">${ongoingCount}</span></div>
+                                </div>
+                                <div class="flex justify-between items-center bg-green-50 dark:bg-green-900/10 px-2 py-1 rounded-lg">
+                                    <span class="text-[10px] text-green-700 dark:text-green-300 font-black">Timely Score</span>
+                                    <div class="flex items-baseline space-x-1">
+                                         <span class="font-black text-green-600 dark:text-green-400 text-sm">${pct === '---' ? 'N/A' : pct + '%'}</span>
+                                         ${opCap > 0 ? `<span class="text-[8px] text-green-500">(${formatNumber(opCap, 0)} MW)</span>` : ''}
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -1354,6 +1375,104 @@
                 });
                 html += `</div></div></div>`;
                 legendEl.innerHTML = html;
+            }
+
+            // Calculate Delayed Tech Breakdown
+            const delayedTechEl = document.getElementById('delayed-tech-list');
+            if (delayedTechEl) {
+                const roundsData = { 'Overall': {} };
+                [1, 2, 3, 4, 5, 6].forEach(r => roundsData[`GEA-${r}`] = {});
+
+                projectList.forEach(p => {
+                    const status = getProjectStatus(p);
+                    if (status === 'ongoing' || status === 'terminated') return; // Analyze 'Due' projects only
+
+                    let techGroup = p.type;
+                    if(techGroup.includes('SOLAR')) techGroup = 'Solar';
+                    else if(techGroup.includes('WIND')) techGroup = 'Wind';
+                    else if(techGroup.includes('HYDRO')) techGroup = 'Hydro';
+                    else if(techGroup.includes('BIOMASS')) techGroup = 'Biomass';
+                    else if(techGroup.includes('GEOTHERMAL')) techGroup = 'Geothermal';
+                    else techGroup = 'Other';
+
+                    const geaKey = `GEA-${p.gea}`;
+
+                    // Update both Overall and the specific round
+                    [roundsData['Overall'], roundsData[geaKey]].forEach(target => {
+                        if (target) {
+                            if (!target[techGroup]) {
+                                target[techGroup] = { dueCount: 0, delayedCount: 0, delayedCap: 0 };
+                            }
+                            target[techGroup].dueCount++;
+                            if (status === 'delayed') {
+                                target[techGroup].delayedCount++;
+                                target[techGroup].delayedCap += p.capacity;
+                            }
+                        }
+                    });
+                });
+
+                let finalHtml = '';
+                
+                Object.keys(roundsData).forEach(roundName => {
+                    const roundStats = roundsData[roundName];
+                    const techStats = Object.keys(roundStats)
+                        .map(tech => {
+                            const stats = roundStats[tech];
+                            const pct = stats.dueCount > 0 ? (stats.delayedCount / stats.dueCount) * 100 : 0;
+                            return { tech, ...stats, pct };
+                        })
+                        .filter(t => t.dueCount > 0)
+                        .sort((a, b) => b.pct - a.pct || b.delayedCap - a.delayedCap);
+
+                    if (techStats.length === 0) return; // Skip if no due projects for this round
+
+                    const roundTotalDelayedCount = techStats.reduce((sum, t) => sum + t.delayedCount, 0);
+                    const roundTotalDueCount = techStats.reduce((sum, t) => sum + t.dueCount, 0);
+                    const roundTotalDelayedCap = techStats.reduce((sum, t) => sum + t.delayedCap, 0);
+
+                    let techHtml = '';
+                    if (techStats.every(t => t.delayedCount === 0)) {
+                        techHtml = '<div class="col-span-full text-center text-green-600 dark:text-green-400 font-bold text-xs py-2 bg-green-50 dark:bg-green-900/10 rounded-lg">Zero delayed projects! All track timings are met.</div>';
+                    } else {
+                        techStats.forEach(t => {
+                            const colorClass = t.pct > 50 ? 'text-red-500' : (t.pct > 0 ? 'text-amber-500' : 'text-green-500');
+                            const bgClass = t.pct > 50 ? 'bg-red-50 dark:bg-red-900/10' : (t.pct > 0 ? 'bg-amber-50 dark:bg-amber-900/10' : 'bg-green-50 dark:bg-green-900/10');
+                            
+                            techHtml += `
+                                <div class="${bgClass} border ${t.pct > 50 ? 'border-red-100 dark:border-red-800/30' : (t.pct > 0 ? 'border-amber-100 dark:border-amber-800/30' : 'border-green-100 dark:border-green-800/30')} rounded-xl p-2 flex flex-col items-center text-center justify-center transition-transform hover:scale-105">
+                                    <span class="text-[10px] font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest mb-0.5">${t.tech}</span>
+                                    <div class="text-xl font-black ${colorClass}">${t.pct.toFixed(0)}%</div>
+                                    <div class="text-[9px] text-gray-500 dark:text-gray-400 mt-1">
+                                        <span class="font-bold">${t.delayedCount}</span>/${t.dueCount} delayed
+                                    </div>
+                                    <div class="text-[9px] font-bold ${colorClass} bg-white dark:bg-gray-800 px-1 py-0.5 rounded shadow-sm mt-1 border border-gray-100 dark:border-gray-700">${formatNumber(t.delayedCap, 1)} MW</div>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    finalHtml += `
+                        <div class="mb-4">
+                            <div class="flex justify-between items-end border-b border-gray-200 dark:border-gray-700 mb-2 pb-1">
+                                <h5 class="text-[11px] font-black text-gray-700 dark:text-gray-300 uppercase tracking-wider rounded pl-1 border-l-4 ${roundName === 'Overall' ? 'border-l-indigo-600 dark:border-l-indigo-400' : 'border-l-gray-400'}">${roundName}</h5>
+                                <div class="text-[10px] text-gray-500 font-semibold">
+                                    <span class="${roundTotalDelayedCount > 0 ? 'text-red-500' : 'text-green-500'} font-bold">${roundTotalDelayedCount}</span>/${roundTotalDueCount} delayed 
+                                    (${formatNumber(roundTotalDelayedCap, 1)} MW)
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                ${techHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (!finalHtml) {
+                    finalHtml = '<div class="text-center text-gray-500 dark:text-gray-400 text-sm py-4">No due projects found to analyze.</div>';
+                }
+
+                delayedTechEl.innerHTML = finalHtml;
             }
         }
 
@@ -1387,7 +1506,7 @@
             document.getElementById('dense-province').innerText = topGrid ? topGrid[0] : 'None';
             
             // 4. Operation Success
-            const due = projectList.filter(p => p.isCod !== 'terminated' && p.year <= 2025);
+            const due = projectList.filter(p => getProjectStatus(p) !== 'ongoing');
             const ops = due.filter(p => p.isCod === true).length;
             const successRatio = due.length > 0 ? (ops / due.length) * 100 : 0;
             document.getElementById('op-success-ratio').innerText = successRatio.toFixed(1) + '%';

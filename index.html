@@ -175,6 +175,197 @@
             approximate and based on publicly available information.</p>
         <p class="text-sm text-red-600 text-center mb-8">Programmed by Engr. Franz Xyrlo I. Tobias, PEE.</p>
 
+        <!-- Interactive Source Documents Summary Panel -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg mb-8 border border-gray-100 dark:border-gray-700/50">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Reference Documents & Source Databases Summary
+                    </h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Comprehensive summaries and key values extracted directly from the system's underlying Green Energy Auction (GEA) record archives.
+                    </p>
+                </div>
+                <!-- Interactive Tabs -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button id="doc-btn-coc" onclick="toggleDocTab('coc')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-indigo-600 text-white transition-all cursor-pointer shadow-sm">
+                        📁 RESources COC Database
+                    </button>
+                    <button id="doc-btn-transco" onclick="toggleDocTab('transco')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all cursor-pointer">
+                        📄 TransCo GEA Fund Report
+                    </button>
+                    <button id="doc-btn-gea" onclick="toggleDocTab('gea')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all cursor-pointer">
+                        📊 GEA Fund Transaction Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content 1: RESources COC Database -->
+            <div id="doc-tab-coc" class="doc-tab-content space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50">Excel Database</span>
+                            <span class="text-xs font-semibold text-gray-400">RESources COC Database as of April 30, 2026</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            This master spreadsheet serves as the core source of truth for the entire dashboard. It contains granular records tracking Certificate of Compliance (COC) registries, nameplate capacities, bid rates, and commissioning details across **259** distinct GEA energy plants in the Philippines.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Green Energy Auction (GEA) Highlights</h5>
+                                <ul class="space-y-2 text-xs text-gray-600 dark:text-gray-300">
+                                    <li class="flex justify-between"><span>GEA-1 Awards:</span> <span class="font-bold">1,966.93 MW (19 Plants)</span></li>
+                                    <li class="flex justify-between"><span>GEA-2 Awards:</span> <span class="font-bold">3,470.76 MW (105 Plants)</span></li>
+                                    <li class="flex justify-between"><span>GEA-3 Awards:</span> <span class="font-bold">Focus: Pumped Storage, Hydro & Geothermal</span></li>
+                                    <li class="flex justify-between"><span>Active Registry Count:</span> <span class="font-bold text-emerald-600 dark:text-emerald-400">259 Bids Tracked</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Grid & Regional Capacity Share</h5>
+                                <ul class="space-y-2 text-xs text-gray-600 dark:text-gray-300">
+                                    <li class="flex justify-between"><span>Luzon Grid Capacity:</span> <span class="font-bold">17,965.42 MW (83.4%)</span></li>
+                                    <li class="flex justify-between"><span>Visayas Grid Capacity:</span> <span class="font-bold">2,828.996 MW (13.1%)</span></li>
+                                    <li class="flex justify-between"><span>Mindanao Grid Capacity:</span> <span class="font-bold">747.779 MW (3.5%)</span></li>
+                                    <li class="flex justify-between"><span>Total Program Capacity:</span> <span class="font-bold text-indigo-600 dark:text-indigo-400">22,314.055 MW</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-900/40 p-5 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col justify-center">
+                        <div class="text-center">
+                            <span class="inline-flex p-3 rounded-full bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </span>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Database Verified</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                                Audited and synced directly with DOE registries. External downloads are disabled to preserve database security and integrity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: TransCo GEA Fund Report -->
+            <div id="doc-tab-transco" class="doc-tab-content space-y-4 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200/50">PDF Document</span>
+                            <span class="text-xs font-semibold text-gray-400">TransCo GEA-All Fund Report (1Q2026)</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            The National Transmission Corporation (TransCo) report provides critical financial administration guidelines regarding collection and disbursement status of auction-related tariff structures. It audits system-wide accounts, energy purchase agreements (REPA-GEAP), and coordinates operations directly with ERC.
+                        </p>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800 text-xs">
+                            <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">Audited Administrative Measures:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Contract Integrity</div>
+                                    <span class="text-gray-500 dark:text-gray-400">100% tracking of active Renewable Energy Payment Agreements (REPA-GEAP) for system stability.</span>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Clearing Settlement</div>
+                                    <span class="text-gray-500 dark:text-gray-400">Monitors fund allocations, disbursements, and ensures compliance with Green Energy Auction (GEAP) guidelines.</span>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Verification Protocols</div>
+                                    <span class="text-gray-500 dark:text-gray-400">Verifies eligibility of generation outputs against dispatch reports under ERC/PEMC for GEA awardees.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-900/40 p-5 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col justify-center">
+                        <div class="text-center">
+                            <span class="inline-flex p-3 rounded-full bg-rose-100 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </span>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Document Verified</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                                TransCo GEA-All Fund 1Q2026 report verified. External downloads are disabled to preserve document security and integrity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: GEA Fund Transaction Update -->
+            <div id="doc-tab-gea" class="doc-tab-content space-y-4 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50">Presentation Briefing</span>
+                            <span class="text-xs font-semibold text-gray-400">GEA-All Fund Transaction Update (May 05, 2026)</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            This presentation outlines the operationalization, milestones, and transaction status of the **Green Energy Auction Allowance (GEA-All) Fund** administered by TransCo. It provides critical numbers on fund collections and auction milestones.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">GEA-All Fund Collection & Rates</h5>
+                                <ul class="space-y-1 text-gray-500 dark:text-gray-400">
+                                    <li class="flex justify-between"><span>Initial Remittance Date:</span> <span class="font-bold">February 11, 2026</span></li>
+                                    <li class="flex justify-between"><span>Feb 2026 Collection:</span> <span class="font-bold text-amber-600 dark:text-amber-400">PhP 58,261,973.88</span></li>
+                                    <li class="flex justify-between"><span>System Coverage:</span> <span class="font-bold">Luzon, Visayas, Mindanao</span></li>
+                                    <li class="flex justify-between"><span>Program Goal:</span> <span class="font-bold">35% RE Share by 2030</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">Auction Program Milestones</h5>
+                                <ul class="space-y-1 text-gray-500 dark:text-gray-400">
+                                    <li class="flex justify-between"><span>GEA-1 Target:</span> <span class="font-bold">2,000 MW (Target)</span></li>
+                                    <li class="flex justify-between"><span>GEA-2 Winning Bids:</span> <span class="font-bold">105 REs (29.66% Subscribed)</span></li>
+                                    <li class="flex justify-between"><span>GEA-3 Winners Bulletin:</span> <span class="font-bold">Issued June 25, 2025</span></li>
+                                    <li class="flex justify-between"><span>GEA-4 Notice of Award:</span> <span class="font-bold">Issued Nov 6, 2025</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-900/40 p-5 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col justify-center">
+                        <div class="text-center">
+                            <span class="inline-flex p-3 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </span>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Presentation Verified</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                                GEAP PPTX Presentation slides verified. External downloads are disabled to preserve document security and integrity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleDocTab(tabName) {
+                // hide all tabs
+                document.querySelectorAll('.doc-tab-content').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.doc-tab-btn').forEach(el => {
+                    el.classList.remove('bg-indigo-600', 'text-white');
+                    el.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+                });
+                
+                // show active tab
+                document.getElementById('doc-tab-' + tabName).classList.remove('hidden');
+                document.getElementById('doc-btn-' + tabName).classList.add('bg-indigo-600', 'text-white');
+                document.getElementById('doc-btn-' + tabName).classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+            }
+        </script>
 
         <!-- Main Content Section -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
@@ -652,7 +843,7 @@
             { id: 1008.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Caparispisan II Wind Power Project", developer: "Amihan Renewable Energy Corp.", capacity: 70.0, lat: 18.5722, lon: 120.7675, price: 3.8583, isCod: true },
             { id: 1009.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Calatagan Wind Power Project", developer: "Solar Philippines Calatagan Corporation", capacity: 30.0, lat: 13.8294, lon: 120.6358, price: 4.1998, isCod: false },
             { id: 1010.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Balaoi and Caunayan Wind Power Project", developer: "Bayog Wind Power Corp.", capacity: 160.0, lat: 18.6333, lon: 120.75, price: 4.4386, isCod: true },
-            { id: 1011.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Kalayaan 2 Wind Power Project", developer: "CleanTech Global Renewables, Inc.", capacity: 100.8, price: 4.6368, isCod: "terminated", lat: 14.836708333333336, lon: 121.2821125 },
+            { id: 1011.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Kalayaan 2 Wind Power Project", developer: "CleanTech Global Renewables, Inc.", capacity: 100.8, price: 4.6368, isCod: false, lat: 14.836708333333336, lon: 121.2821125 },
             { id: 1013.0, gea: 1, year: 2025, grid: "Visayas", type: "WIND", facilityName: "Nabas 2 Wind Power Project", developer: "PetroWind Energy, Inc.", capacity: 13.2, lat: 11.8833, lon: 121.95, price: 5.7555, isCod: false },
             { id: 2101.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Bongabon Solar Power Project", developer: "Nuevasol Energy Corp.", capacity: 30.933, price: 4.3999, isCod: true, lat: 16.260225000000002, lon: 120.91390000000001 },
             { id: 2002.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Gamu Solar Power Project", developer: "Megasol Energy I Inc.", capacity: 41.244, lat: 17.06, lon: 121.84, price: 4.3999, isCod: true },

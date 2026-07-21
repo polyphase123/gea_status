@@ -560,16 +560,16 @@
             <div class="hidden md:block rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                 <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]" data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]" data-sort="year">Year <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]" data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[13%]" data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[26%]" data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[22%]" data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]" data-sort="capacity">Capacity (MW) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]" data-sort="price">Price (PhP/kWh) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-center text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]" data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
+                        <tr class="select-none">
+                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[5.5%]" data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[5.5%]" data-sort="year">Year <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[6.5%]" data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[13%]" data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2.5 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[23%]" data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[19%]" data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9%]" data-sort="capacity">Cap (MW) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9.5%]" data-sort="price">Price (₱/kWh) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col" class="px-2 py-3 text-center text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9.5%]" data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
                         </tr>
                     </thead>
                     <tbody id="projects-table-body"
@@ -587,7 +587,6 @@
         <footer class="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
             <p>Data sourced from DOE public records.</p>
         </footer>
-    </div>
 
     <!-- Project Detail Modal -->
     <div id="project-modal"
@@ -1193,13 +1192,13 @@
 
             projectList.forEach(project => {
                 const status = getProjectStatus(project);
-                let statusHtml = '<span class="px-2.5 py-1 text-[10px] font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 rounded-full">ON-GOING</span>';
+                let statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 rounded-full">ON-GOING</span>';
                 if (status === 'terminated') {
-                    statusHtml = '<span class="px-2.5 py-1 text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-950/80 dark:text-red-400 rounded-full">TERMINATED</span>';
+                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-950/80 dark:text-red-400 rounded-full">TERMINATED</span>';
                 } else if (status === 'operation') {
-                    statusHtml = '<span class="px-2.5 py-1 text-[10px] font-bold bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-300 rounded-full">IN OPERATION</span>';
+                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-300 rounded-full">IN OPERATION</span>';
                 } else if (status === 'delayed') {
-                    statusHtml = '<span class="px-2.5 py-1 text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 rounded-full">DELAYED</span>';
+                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 rounded-full">DELAYED</span>';
                 }
 
                 // 1. Desktop Table Row (Visible >= md)
@@ -1207,7 +1206,7 @@
                 row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700';
                 row.dataset.projectId = project.id;
                 row.dataset.projectGea = project.gea;
-                row.innerHTML = `<td class="px-2 py-3 text-xs font-semibold text-gray-900 dark:text-gray-100">GEA-${project.gea}</td><td class="px-2 py-3 text-xs font-medium text-gray-900 dark:text-gray-100">${project.year}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400">${project.grid}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400 break-words">${project.type}</td><td class="px-2 py-3 text-xs font-medium text-gray-900 dark:text-gray-100 break-words leading-tight">${project.facilityName}</td><td class="px-2 py-3 text-xs text-gray-600 dark:text-gray-400 break-words leading-tight">${project.developer}</td><td class="px-2 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 text-right">${formatNumber(project.capacity)}</td><td class="px-2 py-3 text-xs font-bold text-indigo-600 dark:text-indigo-400 text-right">${project.price ? formatNumber(project.price, 4) : 'N/A'}</td><td class="px-2 py-3 text-center text-xs">${statusHtml}</td>`;
+                row.innerHTML = `<td class="px-2 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">GEA-${project.gea}</td><td class="px-2 py-3 text-xs font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">${project.year}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">${project.grid}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis" title="${project.type}">${project.type}</td><td class="px-2.5 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 break-words leading-snug">${project.facilityName}</td><td class="px-2 py-3 text-xs text-gray-600 dark:text-gray-400 break-words leading-snug">${project.developer}</td><td class="px-2 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 text-right whitespace-nowrap">${formatNumber(project.capacity)}</td><td class="px-2 py-3 text-xs font-bold text-indigo-600 dark:text-indigo-400 text-right whitespace-nowrap">${project.price ? formatNumber(project.price, 4) : 'N/A'}</td><td class="px-2 py-3 text-center text-xs whitespace-nowrap">${statusHtml}</td>`;
                 tableBody.appendChild(row);
 
                 // 2. Mobile Powerplant Card (Visible < md - Zero Horizontal Scroll)

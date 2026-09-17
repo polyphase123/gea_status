@@ -150,6 +150,20 @@
                 Program Winners</h1>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Data compiled from DOE public notices for GEA-1,
                 GEA-2, GEA-3, and GEA-4.</p>
+            
+            <!-- Data Freshness & Updated Files Badge -->
+            <div class="inline-flex flex-wrap items-center justify-center gap-2 mt-3 text-xs">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 font-medium shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <strong>Latest Data Update:</strong> September 07, 2026
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60 text-gray-700 dark:text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <strong>Source Files:</strong> RESources COC (31-Aug-2026) &bull; TransCo GEA-All Update (07-Sep-2026)
+                </span>
+            </div>
             <div class="absolute top-0 right-0">
                 <button id="dark-mode-toggle"
                     class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -448,43 +462,38 @@
             </div>
 
             <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-blue-800 dark:text-blue-200">Total
-                        Capacity</div>
-                    <div id="total-capacity" class="text-2xl font-black text-blue-900 dark:text-blue-100 mt-1">0 MW
-                    </div>
+                class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="bg-blue-50 dark:bg-blue-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-blue-100 dark:border-blue-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-blue-800 dark:text-blue-200">Total Awarded</div>
+                    <div id="total-capacity" class="text-xl font-black text-blue-900 dark:text-blue-100 mt-1">0 MW</div>
                 </div>
-                <div class="bg-green-50 dark:bg-green-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-green-800 dark:text-green-200">Est.
-                        Investment</div>
-                    <div id="est-investment" class="text-2xl font-black text-green-900 dark:text-green-100 mt-1">$0 B
-                    </div>
+                <div class="bg-emerald-50 dark:bg-emerald-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-emerald-100 dark:border-emerald-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-emerald-800 dark:text-emerald-200">In Operation</div>
+                    <div id="operational-capacity" class="text-xl font-black text-emerald-900 dark:text-emerald-100 mt-1">0 MW</div>
                 </div>
-                <div
-                    class="bg-emerald-50 dark:bg-emerald-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-emerald-800 dark:text-emerald-200">
-                        CO2 Avoided/Yr</div>
-                    <div id="co2-avoided" class="text-2xl font-black text-emerald-900 dark:text-emerald-100 mt-1">0 MT
-                    </div>
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-indigo-100 dark:border-indigo-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-indigo-800 dark:text-indigo-200">Pipeline (Dev)</div>
+                    <div id="pipeline-capacity" class="text-xl font-black text-indigo-900 dark:text-indigo-100 mt-1">0 MW</div>
                 </div>
-                <div class="bg-amber-50 dark:bg-amber-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-amber-800 dark:text-amber-200">Avg.
-                        Bid Price</div>
-                    <div id="avg-bid-price" class="text-2xl font-black text-amber-900 dark:text-amber-100 mt-1">0.00
-                    </div>
+                <div class="bg-amber-50 dark:bg-amber-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-amber-100 dark:border-amber-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-amber-800 dark:text-amber-200">GEA-All Fund</div>
+                    <div id="fund-balance-kpi" class="text-xl font-black text-amber-900 dark:text-amber-100 mt-1">₱1,008 M</div>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-indigo-800 dark:text-indigo-200">
-                        Local Green Jobs</div>
-                    <div id="est-jobs" class="text-2xl font-black text-indigo-900 dark:text-indigo-100 mt-1">0
-                    </div>
+                <div class="bg-green-50 dark:bg-green-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-green-100 dark:border-green-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-green-800 dark:text-green-200">Est. Investment</div>
+                    <div id="est-investment" class="text-xl font-black text-green-900 dark:text-green-100 mt-1">$0 B</div>
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl flex flex-col justify-center text-center">
-                    <div class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">
-                        Projects Found</div>
-                    <div id="project-count" class="text-2xl font-black text-slate-700 dark:text-gray-100 mt-1">0
-                    </div>
+                <div class="bg-teal-50 dark:bg-teal-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-teal-100 dark:border-teal-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-teal-800 dark:text-teal-200">CO2 Offset/Yr</div>
+                    <div id="co2-avoided" class="text-xl font-black text-teal-900 dark:text-teal-100 mt-1">0 MT</div>
+                </div>
+                <div class="bg-purple-50 dark:bg-purple-900/40 p-3 rounded-xl flex flex-col justify-center text-center border border-purple-100 dark:border-purple-800/40">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-purple-800 dark:text-purple-200">Avg. Bid Price</div>
+                    <div id="avg-bid-price" class="text-xl font-black text-purple-900 dark:text-purple-100 mt-1">₱0.00</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl flex flex-col justify-center text-center border border-slate-200 dark:border-slate-700">
+                    <div class="text-[9px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Projects Tracked</div>
+                    <div id="project-count" class="text-xl font-black text-slate-700 dark:text-gray-100 mt-1">0</div>
                 </div>
             </div>
 
@@ -549,6 +558,68 @@
                 </div>
             </div>
 
+            <!-- Regional Grid Absorption & Substation Allocation Bar -->
+            <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <span>⚡</span> Regional Grid Absorption & Transmission Allocation
+                        </h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Total program distribution across national power grids with primary substation interconnection nodes.</p>
+                    </div>
+                    <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-1 rounded-full border border-indigo-200 dark:border-indigo-800 self-start md:self-auto">
+                        Total Program: 22,314.06 MW
+                    </div>
+                </div>
+
+                <!-- Multi-segment Progress Bar -->
+                <div class="w-full h-7 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex shadow-inner mb-4">
+                    <div id="grid-bar-luzon" style="width: 80.5%;" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-[11px] font-bold text-white flex items-center justify-center transition-all duration-500" title="Luzon: 17,965.42 MW (80.5%)">
+                        Luzon 80.5%
+                    </div>
+                    <div id="grid-bar-visayas" style="width: 12.7%;" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-[11px] font-bold text-white flex items-center justify-center transition-all duration-500" title="Visayas: 2,829.00 MW (12.7%)">
+                        Visayas 12.7%
+                    </div>
+                    <div id="grid-bar-mindanao" style="width: 6.8%;" class="bg-gradient-to-r from-amber-500 to-orange-600 text-[10px] font-bold text-white flex items-center justify-center transition-all duration-500" title="Mindanao: 747.78 MW (3.4%)">
+                        Mindanao 3.4%
+                    </div>
+                </div>
+
+                <!-- 3 Grid Detail Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border-l-4 border-blue-600 shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm text-gray-800 dark:text-gray-100">Luzon Grid</span>
+                            <span class="text-xs font-black text-blue-600 dark:text-blue-400" id="luzon-grid-cap">17,965.42 MW</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-2">High density ground solar, onshore/offshore wind, and pumped storage hydro.</p>
+                        <div class="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900/60 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <strong>Key Nodes:</strong> Bolo 500kV, Hermosa 500kV, Tuy 500kV, San Jose 500kV, Castillejos.
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border-l-4 border-emerald-600 shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm text-gray-800 dark:text-gray-100">Visayas Grid</span>
+                            <span class="text-xs font-black text-emerald-600 dark:text-emerald-400" id="visayas-grid-cap">2,829.00 MW</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-2">Solar, geothermal baseload, biomass, and wind clusters.</p>
+                        <div class="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900/60 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <strong>Key Nodes:</strong> Nabas-Caticlan 138kV, Cadiz-E.B. Magalona, Daanbantayan, Compostela.
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border-l-4 border-amber-600 shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sm text-gray-800 dark:text-gray-100">Mindanao Grid</span>
+                            <span class="text-xs font-black text-amber-600 dark:text-amber-400" id="mindanao-grid-cap">747.78 MW</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-2">Hydroelectric run-of-river, solar PV, and biomass generation.</p>
+                        <div class="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900/60 p-2 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <strong>Key Nodes:</strong> Villanueva 138kV, Kibawe, Matanao, Balo-i, Kirahon substation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Timeliness Analytics Section -->
             <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Timeliness Performance Analytics</h3>
@@ -567,113 +638,128 @@
                         <div id="timeliness-legend" class="space-y-4 text-xs"></div>
                     </div>
                 </div>
+            </div>
 
-            </div></div><!-- Analytics Injection -->
+            <!-- Advanced Market Insights -->
+            <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Advanced Market Insights</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                         <span class="text-[10px] text-gray-500 uppercase font-bold">Top 3 Developers Market Share</span>
+                         <div id="market-concentration" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0%</div>
+                     </div>
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                         <span class="text-[10px] text-gray-500 uppercase font-bold">Average Plant Size</span>
+                         <div id="avg-size-plant" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0.0 MW</div>
+                     </div>
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                         <span class="text-[10px] text-gray-500 uppercase font-bold">Peak Grid loading node</span>
+                         <div id="dense-province" class="text-lg font-black text-amber-600 dark:text-amber-400 mt-1">None</div>
+                     </div>
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
+                         <span class="text-[10px] text-gray-500 uppercase font-bold">Operational Success Ratio</span>
+                         <div id="op-success-ratio" class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">0%</div>
+                     </div>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
+                          <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Capacity Scaling factor over Rounds (MW)</h4>
+                          <div class="h-64"><canvas id="scale-factor-chart"></canvas></div>
+                     </div>
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
+                          <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Commissioning Timeline Pipeline schedule</h4>
+                          <div class="h-64"><canvas id="pipeline-chart"></canvas></div>
+                     </div>
+                </div>
+            </div>
 
-                <!-- Advanced Market Insights -->
-                <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Advanced Market Insights</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
-                             <span class="text-[10px] text-gray-500 uppercase font-bold">Top 3 Developers Market Share</span>
-                             <div id="market-concentration" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0%</div>
-                         </div>
-                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
-                             <span class="text-[10px] text-gray-500 uppercase font-bold">Average Plant Size</span>
-                             <div id="avg-size-plant" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0.0 MW</div>
-                         </div>
-                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
-                             <span class="text-[10px] text-gray-500 uppercase font-bold">Peak Grid loading node</span>
-                             <div id="dense-province" class="text-lg font-black text-amber-600 dark:text-amber-400 mt-1">None</div>
-                         </div>
-                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
-                             <span class="text-[10px] text-gray-500 uppercase font-bold">Operational Success Ratio</span>
-                             <div id="op-success-ratio" class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">0%</div>
-                         </div>
+            <!-- Commissioning Milestone Delivery Tracker -->
+            <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <span>🎯</span> Commissioning Milestone Delivery Tracker
+                        </h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Progression from target commercial operation dates (COD) to certified operational execution.</p>
                     </div>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                         <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
-                              <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Capacity Scaling factor over Rounds (MW)</h4>
-                              <div class="h-64"><canvas id="scale-factor-chart"></canvas></div>
-                         </div>
-                         <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-80">
-                              <h4 class="text-md font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Commissioning Timeline Pipeline schedule</h4>
-                              <div class="h-64"><canvas id="pipeline-chart"></canvas></div>
-                         </div>
+                    <div class="flex flex-wrap items-center gap-3 text-xs">
+                        <span class="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> In Operation (COD)</span>
+                        <span class="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400"><span class="w-2 h-2 rounded-full bg-blue-500"></span> On-Going Delivery</span>
+                        <span class="inline-flex items-center gap-1 font-semibold text-amber-600 dark:text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Delayed</span>
                     </div>
                 </div>
-    
+
+                <div id="milestone-tracker-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+
             <!-- GEAR Prices Section -->
             <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">Green Energy Auction
-                    Reserve (GEAR) Prices</h3>
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <span>🏷️</span> Green Energy Auction Reserve (GEAR) Price Benchmarks
+                        </h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Official ERC maximum ceiling rates (PhP/kWh) set across auction iterations.</p>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-full self-start md:self-auto">All prices in PhP/kWh</span>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div
                         class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-                        <h4
-                            class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
-                            GEA-1 (Historical)</h4>
-                        <ul class="text-sm space-y-1">
-                            <li class="flex justify-between"><span>Solar:</span> <span class="font-bold">3.6779</span>
-                            </li>
-                            <li class="flex justify-between"><span>Wind:</span> <span class="font-bold">6.0584</span>
-                            </li>
-                            <li class="flex justify-between"><span>Biomass:</span> <span class="font-bold">5.0797</span>
-                            </li>
-                            <li class="flex justify-between"><span>ROR Hydro:</span> <span
-                                    class="font-bold">5.4913</span></li>
+                        <div class="flex justify-between items-center mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">GEA-1 (Historical)</h4>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold">2022</span>
+                        </div>
+                        <ul class="text-sm space-y-1.5">
+                            <li class="flex justify-between"><span>Solar (Ground):</span> <span class="font-bold font-mono">₱3.6779</span></li>
+                            <li class="flex justify-between"><span>Onshore Wind:</span> <span class="font-bold font-mono">₱6.0584</span></li>
+                            <li class="flex justify-between"><span>Biomass:</span> <span class="font-bold font-mono">₱5.0797</span></li>
+                            <li class="flex justify-between"><span>ROR Hydro:</span> <span class="font-bold font-mono">₱5.4913</span></li>
                         </ul>
                     </div>
                     <div
                         class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-                        <h4
-                            class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
-                            GEA-2 (Recent)</h4>
-                        <ul class="text-sm space-y-1">
-                            <li class="flex justify-between"><span>Rooftop Solar:</span> <span
-                                    class="font-bold">4.8738</span></li>
-                            <li class="flex justify-between"><span>Ground Solar:</span> <span
-                                    class="font-bold">4.4043</span></li>
-                            <li class="flex justify-between"><span>Floating Solar:</span> <span
-                                    class="font-bold">5.3948</span></li>
-                            <li class="flex justify-between"><span>Onshore Wind:</span> <span
-                                    class="font-bold">5.8481</span></li>
-                            <li class="flex justify-between"><span>Biomass:</span> <span class="font-bold">5.4024</span>
-                            </li>
+                        <div class="flex justify-between items-center mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">GEA-2 (Recent)</h4>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold">2023</span>
+                        </div>
+                        <ul class="text-sm space-y-1.5">
+                            <li class="flex justify-between"><span>Rooftop Solar:</span> <span class="font-bold font-mono">₱4.8738</span></li>
+                            <li class="flex justify-between"><span>Ground Solar:</span> <span class="font-bold font-mono">₱4.4043</span></li>
+                            <li class="flex justify-between"><span>Floating Solar:</span> <span class="font-bold font-mono">₱5.3948</span></li>
+                            <li class="flex justify-between"><span>Onshore Wind:</span> <span class="font-bold font-mono">₱5.8481</span></li>
+                            <li class="flex justify-between"><span>Biomass:</span> <span class="font-bold font-mono">₱5.4024</span></li>
                         </ul>
                     </div>
                     <div
                         class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-                        <h4
-                            class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
-                            GEA-4 (Active)</h4>
-                        <ul class="text-sm space-y-1">
-                            <li class="flex justify-between"><span>Rooftop Solar:</span> <span
-                                    class="font-bold">5.6800</span></li>
-                            <li class="flex justify-between"><span>Ground Solar:</span> <span
-                                    class="font-bold">4.4832</span></li>
-                            <li class="flex justify-between"><span>Floating Solar:</span> <span
-                                    class="font-bold">6.5258</span></li>
-                            <li class="flex justify-between"><span>Onshore Wind:</span> <span
-                                    class="font-bold">6.0859</span></li>
-                            <li class="flex justify-between"><span>Solar + ESS:</span> <span
-                                    class="font-bold">5.4028</span></li>
+                        <div class="flex justify-between items-center mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">GEA-4 (Active)</h4>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 font-bold">Current</span>
+                        </div>
+                        <ul class="text-sm space-y-1.5">
+                            <li class="flex justify-between"><span>Rooftop Solar:</span> <span class="font-bold font-mono">₱5.6800</span></li>
+                            <li class="flex justify-between"><span>Ground Solar:</span> <span class="font-bold font-mono">₱4.4832</span></li>
+                            <li class="flex justify-between"><span>Floating Solar:</span> <span class="font-bold font-mono">₱6.5258</span></li>
+                            <li class="flex justify-between"><span>Onshore Wind:</span> <span class="font-bold font-mono">₱6.0859</span></li>
+                            <li class="flex justify-between"><span>Solar + ESS:</span> <span class="font-bold font-mono">₱5.4028</span></li>
                         </ul>
                     </div>
                     <div
                         class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-                        <h4
-                            class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
-                            GEA-5 & GEA-6</h4>
-                        <ul class="text-sm space-y-1">
-                            <li class="flex justify-between"><span>GEA-5 Offshore Wind:</span> <span
-                                    class="font-bold">11.0000</span></li>
-                            <li class="flex justify-between"><span>GEA-6 Biomass WTE:</span> <span
-                                    class="font-bold">8.0167</span></li>
+                        <div class="flex justify-between items-center mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">GEA-5 & GEA-6</h4>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-bold">Upcoming</span>
+                        </div>
+                        <ul class="text-sm space-y-1.5">
+                            <li class="flex justify-between"><span>Offshore Wind (GEA-5):</span> <span class="font-bold font-mono text-indigo-600 dark:text-indigo-400">₱11.0000</span></li>
+                            <li class="flex justify-between"><span>Waste-to-Energy (GEA-6):</span> <span class="font-bold font-mono">₱8.0167</span></li>
+                            <li class="flex justify-between"><span>Impounding Hydro:</span> <span class="font-bold font-mono">₱5.8705</span></li>
+                            <li class="flex justify-between"><span>Deep Geothermal:</span> <span class="font-bold font-mono">₱6.5000</span></li>
                         </ul>
-                        <div class="mt-2 text-[10px] text-gray-500 text-center uppercase tracking-wider">Prices in
-                            PhP/kWh</div>
                     </div>
                 </div>
             </div>
@@ -704,6 +790,36 @@
                     </select>
                     <button id="compare-btn"
                         class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">Compare</button>
+                </div>
+            </div>
+
+            <!-- Developer Portfolio Performance Matrix -->
+            <div class="mb-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <span>🏆</span> Developer Portfolio Performance Matrix
+                        </h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Institutional ranking by awarded capacity, portfolio diversification, and delivery execution.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <table class="w-full text-left divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-700/60 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-300">
+                            <tr>
+                                <th class="px-4 py-3">Rank & Developer</th>
+                                <th class="px-4 py-3 text-right">Awarded (MW)</th>
+                                <th class="px-4 py-3 text-center">Projects</th>
+                                <th class="px-4 py-3 text-right">Operational (MW)</th>
+                                <th class="px-4 py-3 text-center">Execution %</th>
+                                <th class="px-4 py-3">Dominant Tech</th>
+                            </tr>
+                        </thead>
+                        <tbody id="developer-matrix-body" class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
+                            <!-- Populated dynamically by JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -1103,11 +1219,15 @@
         const resetBtn = document.getElementById('reset-filters');
         const tableBody = document.getElementById('projects-table-body');
         const totalCapacityEl = document.getElementById('total-capacity');
+        const operationalCapacityEl = document.getElementById('operational-capacity');
+        const pipelineCapacityEl = document.getElementById('pipeline-capacity');
+        const fundBalanceKpiEl = document.getElementById('fund-balance-kpi');
         const estInvestmentEl = document.getElementById('est-investment');
         const co2AvoidedEl = document.getElementById('co2-avoided');
         const avgBidPriceEl = document.getElementById('avg-bid-price');
         const projectCountEl = document.getElementById('project-count');
-        const estJobsEl = document.getElementById('est-jobs');
+        const milestoneTrackerGridEl = document.getElementById('milestone-tracker-grid');
+        const developerMatrixBodyEl = document.getElementById('developer-matrix-body');
         const regionalDominanceEl = document.getElementById('regional-dominance-list');
         const noResultsEl = document.getElementById('no-results');
         const tableHeaders = document.querySelectorAll('th[data-sort]');
@@ -1390,8 +1510,16 @@
 
         function updateDashboard(projectList) {
             const totalCap = projectList.reduce((sum, p) => sum + p.capacity, 0);
-            totalCapacityEl.textContent = `${formatNumber(totalCap, 3)} MW`;
+            totalCapacityEl.textContent = `${formatNumber(totalCap, 2)} MW`;
             projectCountEl.textContent = projectList.length;
+
+            const opProjects = projectList.filter(p => p.isCod === true || getProjectStatus(p) === 'operation');
+            const opCap = opProjects.reduce((sum, p) => sum + p.capacity, 0);
+            const pipelineCap = Math.max(0, totalCap - opCap);
+
+            if (operationalCapacityEl) operationalCapacityEl.textContent = `${formatNumber(opCap, 1)} MW`;
+            if (pipelineCapacityEl) pipelineCapacityEl.textContent = `${formatNumber(pipelineCap, 1)} MW`;
+            if (fundBalanceKpiEl) fundBalanceKpiEl.textContent = '₱1,008 M';
 
             const investment = projectList.reduce((sum, p) => {
                 let rate = 1.5;
@@ -1414,21 +1542,162 @@
             }, 0);
             co2AvoidedEl.textContent = `${formatNumber(co2 / 1000, 0)}k MT`;
 
-            // Est. Green Jobs: Capacity * Tech_Factor
-            const jobs = projectList.reduce((sum, p) => {
-                let factor = 3; // Solar (Direct Local Jobs / MW)
-                if (p.type.includes('WIND')) factor = 2.5;
-                else if (p.type.includes('HYDRO')) factor = 4;
-                else if (p.type.includes('GEOTHERMAL')) factor = 5;
-                else if (p.type.includes('BIOMASS') || p.type.includes('WASTE-TO-ENERGY')) factor = 6;
-                else if (p.type.includes('IRESS')) factor = 3.5;
-                return sum + (p.capacity * factor);
-            }, 0);
-            estJobsEl.textContent = formatNumber(jobs, 0);
-
             const pricedProjects = projectList.filter(p => p.price > 0);
             const avgPrice = pricedProjects.length > 0 ? pricedProjects.reduce((sum, p) => sum + p.price, 0) / pricedProjects.length : 0;
-            avgBidPriceEl.textContent = avgPrice > 0 ? formatNumber(avgPrice, 2) : '---';
+            avgBidPriceEl.textContent = avgPrice > 0 ? `₱${formatNumber(avgPrice, 2)}` : '---';
+
+            // Update Regional Grid Bar
+            const luzonCap = projectList.filter(p => p.grid === 'Luzon').reduce((sum, p) => sum + p.capacity, 0);
+            const visayasCap = projectList.filter(p => p.grid === 'Visayas').reduce((sum, p) => sum + p.capacity, 0);
+            const mindanaoCap = projectList.filter(p => p.grid === 'Mindanao').reduce((sum, p) => sum + p.capacity, 0);
+
+            if (totalCap > 0) {
+                const luzonPct = (luzonCap / totalCap) * 100;
+                const visayasPct = (visayasCap / totalCap) * 100;
+                const mindanaoPct = (mindanaoCap / totalCap) * 100;
+
+                const barLuzon = document.getElementById('grid-bar-luzon');
+                const barVisayas = document.getElementById('grid-bar-visayas');
+                const barMindanao = document.getElementById('grid-bar-mindanao');
+
+                if (barLuzon) {
+                    barLuzon.style.width = `${luzonPct}%`;
+                    barLuzon.textContent = luzonPct > 8 ? `Luzon ${luzonPct.toFixed(1)}%` : '';
+                }
+                if (barVisayas) {
+                    barVisayas.style.width = `${visayasPct}%`;
+                    barVisayas.textContent = visayasPct > 8 ? `Visayas ${visayasPct.toFixed(1)}%` : '';
+                }
+                if (barMindanao) {
+                    barMindanao.style.width = `${mindanaoPct}%`;
+                    barMindanao.textContent = mindanaoPct > 8 ? `Mindanao ${mindanaoPct.toFixed(1)}%` : '';
+                }
+            }
+            const luzonCapEl = document.getElementById('luzon-grid-cap');
+            const visayasCapEl = document.getElementById('visayas-grid-cap');
+            const mindanaoCapEl = document.getElementById('mindanao-grid-cap');
+            if (luzonCapEl) luzonCapEl.textContent = `${formatNumber(luzonCap, 2)} MW`;
+            if (visayasCapEl) visayasCapEl.textContent = `${formatNumber(visayasCap, 2)} MW`;
+            if (mindanaoCapEl) mindanaoCapEl.textContent = `${formatNumber(mindanaoCap, 2)} MW`;
+        }
+
+        function updateMilestoneTracker(projectList) {
+            const trackerGrid = document.getElementById('milestone-tracker-grid');
+            if (!trackerGrid) return;
+            
+            const milestoneYears = ['2024', '2025', '2026', '2027', '2028+'];
+            let html = '';
+            
+            milestoneYears.forEach(yearLabel => {
+                let yearProjects = [];
+                if (yearLabel === '2028+') {
+                    yearProjects = projectList.filter(p => p.year >= 2028 || !p.year);
+                } else {
+                    const yr = parseInt(yearLabel);
+                    yearProjects = projectList.filter(p => p.year === yr);
+                }
+                
+                const totalCap = yearProjects.reduce((sum, p) => sum + p.capacity, 0);
+                const opProjects = yearProjects.filter(p => p.isCod === true || getProjectStatus(p) === 'operation');
+                const opCap = opProjects.reduce((sum, p) => sum + p.capacity, 0);
+                const delayedProjects = yearProjects.filter(p => getProjectStatus(p) === 'delayed');
+                const delayedCap = delayedProjects.reduce((sum, p) => sum + p.capacity, 0);
+                const ongoingCap = Math.max(0, totalCap - opCap - delayedCap);
+                
+                const opPct = totalCap > 0 ? ((opCap / totalCap) * 100).toFixed(0) : 0;
+                
+                html += `
+                    <div class="bg-gray-50 dark:bg-gray-800/70 p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-black text-gray-900 dark:text-gray-100 font-mono">${yearLabel} Target</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${opCap > 0 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}">${opPct}% COD</span>
+                            </div>
+                            <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mb-2">${formatNumber(totalCap, 1)} <span class="text-xs font-normal text-gray-500">MW</span></div>
+                            
+                            <div class="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex mb-3">
+                                <div style="width: ${totalCap > 0 ? (opCap/totalCap)*100 : 0}%;" class="bg-emerald-500" title="Operational: ${formatNumber(opCap, 1)} MW"></div>
+                                <div style="width: ${totalCap > 0 ? (ongoingCap/totalCap)*100 : 0}%;" class="bg-blue-500" title="On-going: ${formatNumber(ongoingCap, 1)} MW"></div>
+                                <div style="width: ${totalCap > 0 ? (delayedCap/totalCap)*100 : 0}%;" class="bg-amber-500" title="Delayed: ${formatNumber(delayedCap, 1)} MW"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5 text-[11px] text-gray-600 dark:text-gray-300 pt-2 border-t border-gray-100 dark:border-gray-700/60">
+                            <div class="flex justify-between">
+                                <span class="text-emerald-600 dark:text-emerald-400 font-medium">● COD Achieved:</span>
+                                <span class="font-bold">${formatNumber(opCap, 1)} MW (${opProjects.length})</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-600 dark:text-blue-400 font-medium">● On-Going:</span>
+                                <span class="font-bold">${formatNumber(ongoingCap, 1)} MW</span>
+                            </div>
+                            ${delayedCap > 0 ? `
+                            <div class="flex justify-between">
+                                <span class="text-amber-600 dark:text-amber-400 font-medium">● Delayed:</span>
+                                <span class="font-bold text-amber-600">${formatNumber(delayedCap, 1)} MW (${delayedProjects.length})</span>
+                            </div>` : ''}
+                            <div class="flex justify-between text-gray-400 text-[10px] pt-1">
+                                <span>Total Plants:</span>
+                                <span class="font-bold">${yearProjects.length} Plants</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            trackerGrid.innerHTML = html;
+        }
+
+        function updateDeveloperMatrix(projectList) {
+            const matrixBody = document.getElementById('developer-matrix-body');
+            if (!matrixBody) return;
+            
+            const devMap = {};
+            projectList.forEach(p => {
+                const dev = p.developer || 'Unknown';
+                if (!devMap[dev]) {
+                    devMap[dev] = { name: dev, totalCap: 0, projects: 0, opCap: 0, techMap: {} };
+                }
+                devMap[dev].totalCap += p.capacity;
+                devMap[dev].projects += 1;
+                if (p.isCod === true || getProjectStatus(p) === 'operation') {
+                    devMap[dev].opCap += p.capacity;
+                }
+                devMap[dev].techMap[p.type] = (devMap[dev].techMap[p.type] || 0) + p.capacity;
+            });
+            
+            const sortedDevs = Object.values(devMap).sort((a, b) => b.totalCap - a.totalCap).slice(0, 10);
+            
+            let html = '';
+            sortedDevs.forEach((dev, index) => {
+                const opPct = dev.totalCap > 0 ? ((dev.opCap / dev.totalCap) * 100).toFixed(1) : 0;
+                const domTech = Object.entries(dev.techMap).sort((a, b) => b[1] - a[1])[0]?.[0] || 'RE';
+                
+                html += `
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <td class="px-4 py-3 font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full ${index < 3 ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'} flex items-center justify-center text-[10px] font-black">${index + 1}</span>
+                            <span class="truncate max-w-[200px]" title="${dev.name}">${dev.name}</span>
+                        </td>
+                        <td class="px-4 py-3 text-right font-black text-gray-900 dark:text-gray-100 font-mono">${formatNumber(dev.totalCap, 2)}</td>
+                        <td class="px-4 py-3 text-center text-gray-600 dark:text-gray-300 font-semibold">${dev.projects}</td>
+                        <td class="px-4 py-3 text-right font-bold ${dev.opCap > 0 ? 'text-emerald-600 dark:text-emerald-400 font-mono' : 'text-gray-400'}">${dev.opCap > 0 ? formatNumber(dev.opCap, 2) : '0.00'}</td>
+                        <td class="px-4 py-3 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <div class="w-16 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                                    <div style="width: ${opPct}%;" class="bg-emerald-500 h-full rounded-full"></div>
+                                </div>
+                                <span class="text-xs font-bold text-gray-700 dark:text-gray-300">${opPct}%</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">${domTech}</span>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            matrixBody.innerHTML = html || '<tr><td colspan="6" class="text-center py-4 text-gray-400">No developer records found</td></tr>';
         }
 
         function updateRegionalDominance(projectList) {
@@ -1998,6 +2267,8 @@
             updateRegionalDominance(currentFilteredProjects);
             updateTimelinessAnalytics(currentFilteredProjects);
             updateAdvancedAnalytics(currentFilteredProjects);
+            updateMilestoneTracker(currentFilteredProjects);
+            updateDeveloperMatrix(currentFilteredProjects);
         }
 
         function resetFilters() {

@@ -3,13 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="GEA Winners">
-    <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)">
-    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Green Energy Auction (GEA) Program Winners</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,10 +23,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
-
         :root {
             --bg-color: #f3f4f6;
             --card-bg-color: #ffffff;
@@ -54,44 +44,79 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        .overflow-x-auto, .overflow-y-auto {
-            -webkit-overflow-scrolling: touch;
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        button, select, input, a {
-            touch-action: manipulation;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
-        @media (max-width: 1024px) {
-            .responsive-table {
-                min-width: 780px;
-            }
+        .dark ::-webkit-scrollbar-track {
+            background: #2d3748;
         }
 
-        th {
-            user-select: none;
-            -webkit-user-select: none;
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
         }
 
-        .modal-box {
-            max-height: 85vh;
-            max-height: 85dvh;
-            overscroll-behavior: contain;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
-</style>
+
+        .sort-arrow {
+            display: inline-block;
+            margin-left: 5px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        th:hover .sort-arrow {
+            opacity: 1;
+        }
+
+        .leaflet-container {
+            z-index: 10;
+        }
+
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
+            background: var(--card-bg-color);
+            color: var(--text-color);
+        }
+
+        .leaflet-popup-content {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #projects-table-body tr {
+            cursor: pointer;
+        }
+
+        #project-modal,
+        #developer-modal,
+        #comparison-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #project-modal-content,
+        #developer-modal-content,
+        #comparison-modal-content {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
 </head>
 
 <body class="antialiased">
 
-    <div class="container mx-auto p-3 sm:p-6 md:p-8 max-w-7xl">
+    <div class="container mx-auto p-4 md:p-8">
         <!-- Header Section -->
         <header class="text-center mb-8 relative">
-            <div id="wind-turbine" class="mx-auto mb-3 w-16 h-24 sm:w-20 sm:h-30 md:w-24 md:h-36 cursor-pointer" title="Click me!">
+            <div id="wind-turbine" class="mx-auto mb-4 w-24 h-36 cursor-pointer" title="Click me!">
                 <svg viewBox="0 0 100 150" class="w-full h-full">
                     <path class="text-gray-200 dark:text-gray-700" d="M 47 150 L 47 55 C 47 52, 53 52, 53 55 L 53 150 Z"
                         fill="currentColor" />
@@ -121,10 +146,10 @@
                         stroke="#6b7280" stroke-width="1" />
                 </svg>
             </div>
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50 px-2">Green Energy Auction (GEA)
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Green Energy Auction (GEA)
                 Program Winners</h1>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Data compiled from DOE public notices for GEA-1,
-                GEA-2, GEA-3, and GEA-4 (as of June 30, 2026).</p>
+                GEA-2, GEA-3, and GEA-4.</p>
             <div class="absolute top-0 right-0">
                 <button id="dark-mode-toggle"
                     class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -144,14 +169,14 @@
 
         <!-- Map Section -->
         <div id="map"
-            class="w-full h-72 sm:h-96 md:h-[500px] mb-6 rounded-xl sm:rounded-2xl shadow-lg border-2 border-white dark:border-gray-700">
+            class="w-full h-96 md:h-[500px] mb-8 rounded-2xl shadow-lg border-2 border-white dark:border-gray-700">
         </div>
         <p class="text-xs text-center text-gray-500 dark:text-gray-400 -mt-6 mb-2">Note: Project locations are
             approximate and based on publicly available information.</p>
         <p class="text-sm text-red-600 text-center mb-8">Programmed by Engr. Franz Xyrlo I. Tobias, PEE.</p>
 
         <!-- Interactive Source Documents Summary Panel -->
-        <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-lg mb-6 sm:mb-8 border border-gray-100 dark:border-gray-700/50">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg mb-8 border border-gray-100 dark:border-gray-700/50">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
                 <div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
@@ -161,10 +186,21 @@
                         Reference Documents & Source Databases Summary
                     </h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Comprehensive summaries and key values extracted directly from the system's underlying Green Energy Auction (GEA) record archives.
+                        Comprehensive summaries and key values extracted directly from the system's September 2026 Green Energy Auction (GEA) record archives.
                     </p>
                 </div>
-
+                <!-- Interactive Tabs -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button id="doc-btn-coc" onclick="toggleDocTab('coc')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-indigo-600 text-white transition-all cursor-pointer shadow-sm">
+                        📁 RESources COC Database
+                    </button>
+                    <button id="doc-btn-transco" onclick="toggleDocTab('transco')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all cursor-pointer">
+                        📄 TransCo GEA Fund Report
+                    </button>
+                    <button id="doc-btn-gea" onclick="toggleDocTab('gea')" class="doc-tab-btn px-3.5 py-2 font-bold rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all cursor-pointer">
+                        📊 GEA Fund Transaction Update
+                    </button>
+                </div>
             </div>
 
             <!-- Tab Content 1: RESources COC Database -->
@@ -173,10 +209,10 @@
                     <div class="lg:col-span-2 space-y-4 text-sm">
                         <div class="flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50">Excel Database</span>
-                            <span class="text-xs font-semibold text-gray-400">RESources COC Database as of June 30, 2026</span>
+                            <span class="text-xs font-semibold text-gray-400">RESources COC Database as of August 31, 2026</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
-                            This master spreadsheet serves as the core source of truth for the entire dashboard. It contains granular records tracking Certificate of Compliance (COC) registries, nameplate capacities, bid rates, and commissioning details across **259** distinct GEA energy plants in the Philippines.
+                            This master spreadsheet serves as the core source of truth for the dashboard. It tracks granular records of Certificate of Compliance (COC) & Provisional Authority to Operate (PAO) registries, nameplate capacities, bid rates, and commissioning details across **259** distinct GEA energy plants in the Philippines.
                         </p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -185,8 +221,7 @@
                                 <ul class="space-y-2 text-xs text-gray-600 dark:text-gray-300">
                                     <li class="flex justify-between"><span>GEA-1 Awards:</span> <span class="font-bold">1,966.93 MW (19 Plants)</span></li>
                                     <li class="flex justify-between"><span>GEA-2 Awards:</span> <span class="font-bold">3,470.76 MW (105 Plants)</span></li>
-                                    <li class="flex justify-between"><span>GEA-3 Awards:</span> <span class="font-bold">Focus: Pumped Storage, Hydro & Geothermal (12 Plants)</span></li>
-                                    <li class="flex justify-between"><span>GEA-4 Awards:</span> <span class="font-bold">10,195.48 MW (123 Plants)</span></li>
+                                    <li class="flex justify-between"><span>GEA-3 Awards:</span> <span class="font-bold">Focus: Pumped Storage, Hydro & Geothermal</span></li>
                                     <li class="flex justify-between"><span>Active Registry Count:</span> <span class="font-bold text-emerald-600 dark:text-emerald-400">259 Bids Tracked</span></li>
                                 </ul>
                             </div>
@@ -211,7 +246,106 @@
                             </span>
                             <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Database Verified</h4>
                             <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                                Audited and synced directly with DOE registries. External downloads are disabled to preserve database security and integrity.
+                                Audited and synced directly with DOE/ERC registries as of August 31, 2026. External downloads are disabled to preserve database security.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: TransCo GEA Fund Report -->
+            <div id="doc-tab-transco" class="doc-tab-content space-y-4 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200/50">PDF Document</span>
+                            <span class="text-xs font-semibold text-gray-400">TransCo GEA-All Fund Report & Administrative Oversight</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            The National Transmission Corporation (TransCo) report provides critical financial administration guidelines regarding collection and disbursement status of auction-related tariff structures. It audits system-wide accounts, energy purchase agreements (REPA-GEAP), and coordinates operations directly with ERC.
+                        </p>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800 text-xs">
+                            <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">Audited Administrative Measures:</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Contract Integrity</div>
+                                    <span class="text-gray-500 dark:text-gray-400">100% tracking of active Renewable Energy Payment Agreements (REPA-GEAP) for system stability.</span>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Clearing Settlement</div>
+                                    <span class="text-gray-500 dark:text-gray-400">Monitors fund allocations, disbursements, and ensures compliance with Green Energy Auction (GEAP) guidelines.</span>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800/80">
+                                    <div class="font-bold text-rose-600 dark:text-rose-400 mb-1">Verification Protocols</div>
+                                    <span class="text-gray-500 dark:text-gray-400">Verifies eligibility of generation outputs against dispatch reports under ERC/PEMC for GEA awardees.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-900/40 p-5 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col justify-center">
+                        <div class="text-center">
+                            <span class="inline-flex p-3 rounded-full bg-rose-100 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </span>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Document Verified</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                                TransCo GEA-All Fund operational report verified. External downloads are disabled to preserve document security.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: GEA Fund Transaction Update -->
+            <div id="doc-tab-gea" class="doc-tab-content space-y-4 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50">Presentation Briefing</span>
+                            <span class="text-xs font-semibold text-gray-400">GEA-All Fund Transaction Update (September 07, 2026)</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            This presentation outlines the operationalization, fund performance, and transaction status of the **Green Energy Auction Allowance (GEA-All) Fund** administered by TransCo as of September 7, 2026.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">GEA-All Fund Status (Sep 7, 2026)</h5>
+                                <ul class="space-y-1 text-gray-500 dark:text-gray-400">
+                                    <li class="flex justify-between"><span>GEA-All Fund Balance:</span> <span class="font-bold text-amber-600 dark:text-amber-400">PhP 1,008.26 Mn</span></li>
+                                    <li class="flex justify-between"><span>Collections (Aug 31, 2026):</span> <span class="font-bold">PhP 1,678.47 Mn (96.68%)</span></li>
+                                    <li class="flex justify-between"><span>GET Differential (100%):</span> <span class="font-bold">PhP 665.59 Mn (280.36 MW)</span></li>
+                                    <li class="flex justify-between"><span>Billed Generation Paid:</span> <span class="font-bold">64,430.30 MWh (Solar)</span></li>
+                                    <li class="flex justify-between"><span>Approved Rate (2025-2026):</span> <span class="font-bold">PhP 0.0371/kWh</span></li>
+                                    <li class="flex justify-between"><span>Applied Rate (2027):</span> <span class="font-bold">PhP 0.0100/kWh</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+                                <h5 class="font-bold text-gray-800 dark:text-gray-200 mb-2">Auction Program Milestones</h5>
+                                <ul class="space-y-1 text-gray-500 dark:text-gray-400">
+                                    <li class="flex justify-between"><span>GEA-1 Subscribed:</span> <span class="font-bold">1,866.13 MW</span></li>
+                                    <li class="flex justify-between"><span>GEA-2 Subscribed:</span> <span class="font-bold">3,440.756 MW</span></li>
+                                    <li class="flex justify-between"><span>GEA-3 Subscribed:</span> <span class="font-bold">6,677.22 MW</span></li>
+                                    <li class="flex justify-between"><span>GEA-4 Subscribed:</span> <span class="font-bold text-indigo-600 dark:text-indigo-400">9,423.62 MW</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-900/40 p-5 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col justify-center">
+                        <div class="text-center">
+                            <span class="inline-flex p-3 rounded-full bg-amber-100 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </span>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1">Presentation Verified</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                                TransCo GEA-All Transaction Update (Sep 07, 2026) verified. External downloads are disabled to preserve document security.
                             </p>
                         </div>
                     </div>
@@ -219,38 +353,54 @@
             </div>
         </div>
 
+        <script>
+            function toggleDocTab(tabName) {
+                // hide all tabs
+                document.querySelectorAll('.doc-tab-content').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.doc-tab-btn').forEach(el => {
+                    el.classList.remove('bg-indigo-600', 'text-white');
+                    el.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+                });
+                
+                // show active tab
+                document.getElementById('doc-tab-' + tabName).classList.remove('hidden');
+                document.getElementById('doc-btn-' + tabName).classList.add('bg-indigo-600', 'text-white');
+                document.getElementById('doc-btn-' + tabName).classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+            }
+        </script>
+
         <!-- Main Content Section -->
-        <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-lg">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg">
             <!-- Filters Section -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
                 <!-- Filter controls here -->
                 <div>
                     <label for="search-filter"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search
                         Project/Dev</label>
                     <input type="text" id="search-filter" placeholder="e.g., Citicore..."
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                 </div>
                 <div>
                     <label for="gea-filter"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by GEA
                         Round</label>
                     <select id="gea-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All GEA Rounds</option>
                         <option value="1">GEA-1</option>
                         <option value="2">GEA-2</option>
                         <option value="3">GEA-3</option>
                         <option value="4">GEA-4</option>
                         <option value="5">GEA-5</option>
-                        <option value="6">Special Auction (Biomass WTE)</option>
+                        <option value="6">GEA-6</option>
                     </select>
                 </div>
                 <div>
                     <label for="grid-filter"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Grid</label>
                     <select id="grid-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All Grids</option>
                         <option value="Luzon">Luzon</option>
                         <option value="Visayas">Visayas</option>
@@ -261,7 +411,7 @@
                     <label for="year-filter"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Year</label>
                     <select id="year-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All Years</option>
                     </select>
                 </div>
@@ -270,7 +420,7 @@
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by
                         Technology</label>
                     <select id="type-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All Technologies</option>
                     </select>
                 </div>
@@ -279,7 +429,7 @@
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by
                         Developer</label>
                     <select id="developer-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All Developers</option>
                     </select>
                 </div>
@@ -287,7 +437,7 @@
                     <label for="status-filter"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Status</label>
                     <select id="status-filter"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="all">All Statuses</option>
                         <option value="operation">IN OPERATION</option>
                         <option value="ongoing">On-going</option>
@@ -297,42 +447,43 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
                 <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-blue-800 dark:text-blue-200">Total
                         Capacity</div>
-                    <div id="total-capacity" class="text-lg sm:text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 mt-1">0 MW
+                    <div id="total-capacity" class="text-2xl font-black text-blue-900 dark:text-blue-100 mt-1">0 MW
                     </div>
                 </div>
                 <div class="bg-green-50 dark:bg-green-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-green-800 dark:text-green-200">Est.
                         Investment</div>
-                    <div id="est-investment" class="text-lg sm:text-xl md:text-2xl font-black text-green-900 dark:text-green-100 mt-1">$0 B
+                    <div id="est-investment" class="text-2xl font-black text-green-900 dark:text-green-100 mt-1">$0 B
                     </div>
                 </div>
                 <div
                     class="bg-emerald-50 dark:bg-emerald-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-emerald-800 dark:text-emerald-200">
                         CO2 Avoided/Yr</div>
-                    <div id="co2-avoided" class="text-lg sm:text-xl md:text-2xl font-black text-emerald-900 dark:text-emerald-100 mt-1">0 MT
+                    <div id="co2-avoided" class="text-2xl font-black text-emerald-900 dark:text-emerald-100 mt-1">0 MT
                     </div>
                 </div>
                 <div class="bg-amber-50 dark:bg-amber-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-amber-800 dark:text-amber-200">Avg.
                         Bid Price</div>
-                    <div id="avg-bid-price" class="text-lg sm:text-xl md:text-2xl font-black text-amber-900 dark:text-amber-100 mt-1">0.00
+                    <div id="avg-bid-price" class="text-2xl font-black text-amber-900 dark:text-amber-100 mt-1">0.00
                     </div>
                 </div>
                 <div class="bg-indigo-50 dark:bg-indigo-900/50 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-indigo-800 dark:text-indigo-200">
                         Local Green Jobs</div>
-                    <div id="est-jobs" class="text-lg sm:text-xl md:text-2xl font-black text-indigo-900 dark:text-indigo-100 mt-1">0
+                    <div id="est-jobs" class="text-2xl font-black text-indigo-900 dark:text-indigo-100 mt-1">0
                     </div>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl flex flex-col justify-center text-center">
                     <div class="text-[10px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">
                         Projects Found</div>
-                    <div id="project-count" class="text-lg sm:text-xl md:text-2xl font-black text-slate-700 dark:text-gray-100 mt-1">0
+                    <div id="project-count" class="text-2xl font-black text-slate-700 dark:text-gray-100 mt-1">0
                     </div>
                 </div>
             </div>
@@ -425,11 +576,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
                              <span class="text-[10px] text-gray-500 uppercase font-bold">Top 3 Developers Market Share</span>
-                             <div id="market-concentration" class="text-lg sm:text-xl md:text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0%</div>
+                             <div id="market-concentration" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0%</div>
                          </div>
                          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
                              <span class="text-[10px] text-gray-500 uppercase font-bold">Average Plant Size</span>
-                             <div id="avg-size-plant" class="text-lg sm:text-xl md:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0.0 MW</div>
+                             <div id="avg-size-plant" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0.0 MW</div>
                          </div>
                          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
                              <span class="text-[10px] text-gray-500 uppercase font-bold">Peak Grid loading node</span>
@@ -437,7 +588,7 @@
                          </div>
                          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl border border-gray-200 dark:border-gray-600 text-center flex flex-col justify-center">
                              <span class="text-[10px] text-gray-500 uppercase font-bold">Operational Success Ratio</span>
-                             <div id="op-success-ratio" class="text-lg sm:text-xl md:text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">0%</div>
+                             <div id="op-success-ratio" class="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">0%</div>
                          </div>
                     </div>
                     
@@ -500,13 +651,13 @@
                         <ul class="text-sm space-y-1">
                             <li class="flex justify-between"><span>Rooftop Solar:</span> <span
                                     class="font-bold">5.6800</span></li>
-                            <li class="flex justify-between"><span>Ground-mounted Solar:</span> <span
+                            <li class="flex justify-between"><span>Ground Solar:</span> <span
                                     class="font-bold">4.4832</span></li>
                             <li class="flex justify-between"><span>Floating Solar:</span> <span
                                     class="font-bold">6.5258</span></li>
                             <li class="flex justify-between"><span>Onshore Wind:</span> <span
                                     class="font-bold">6.0859</span></li>
-                            <li class="flex justify-between"><span>Solar + ESS (IRESS):</span> <span
+                            <li class="flex justify-between"><span>Solar + ESS:</span> <span
                                     class="font-bold">5.4028</span></li>
                         </ul>
                     </div>
@@ -514,16 +665,15 @@
                         class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
                         <h4
                             class="font-bold text-indigo-600 dark:text-indigo-400 mb-2 border-b border-gray-200 dark:border-gray-600 pb-1">
-                            GEA-5 & Special Auction</h4>
+                            GEA-5 & GEA-6</h4>
                         <ul class="text-sm space-y-1">
                             <li class="flex justify-between"><span>GEA-5 Offshore Wind:</span> <span
                                     class="font-bold">11.0000</span></li>
-                            <li class="flex justify-between"><span>Biomass WTE (Special Auction):</span> <span
-                                    class="font-bold">9.2959</span></li>
+                            <li class="flex justify-between"><span>GEA-6 Biomass WTE:</span> <span
+                                    class="font-bold">8.0167</span></li>
                         </ul>
                         <div class="mt-2 text-[10px] text-gray-500 text-center uppercase tracking-wider">Prices in
                             PhP/kWh</div>
-                        
                     </div>
                 </div>
             </div>
@@ -541,15 +691,15 @@
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                     <select id="compare-dev-1"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="">Select Developer 1</option>
                     </select>
                     <select id="compare-dev-2"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="">Select Developer 2</option>
                     </select>
                     <select id="compare-dev-3"
-                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[44px]">
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
                         <option value="">Select Developer 3</option>
                     </select>
                     <button id="compare-btn"
@@ -557,48 +707,64 @@
                 </div>
             </div>
 
-            <!-- Table Section (Desktop / Tablet - Fits 100% Zero Horizontal Scroll) -->
-            <div class="hidden md:block rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+            <!-- Table Section -->
+            <div class="overflow-x-auto">
                 <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-700">
-                        <tr class="select-none">
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[5.5%]" data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[5.5%]" data-sort="year">Year <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[6.5%]" data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[13%]" data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2.5 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[23%]" data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-left text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[19%]" data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9%]" data-sort="capacity">Cap (MW) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-right text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9.5%]" data-sort="price">Price (₱/kWh) <span class="sort-arrow">↕️</span></th>
-                            <th scope="col" class="px-2 py-3 text-center text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer whitespace-nowrap w-[9.5%]" data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
+                        <tr>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[4%]"
+                                data-sort="gea">GEA <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[5%]"
+                                data-sort="year">Year <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[6%]"
+                                data-sort="grid">Grid <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[14%]"
+                                data-sort="type">Technology <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[25%]"
+                                data-sort="facilityName">Project Name <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[23%]"
+                                data-sort="developer">Developer <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[7%]"
+                                data-sort="capacity">Capacity (MW) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]"
+                                data-sort="price">Price (PhP/kWh) <span class="sort-arrow">↕️</span></th>
+                            <th scope="col"
+                                class="px-2 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer w-[8%]"
+                                data-sort="isCod">Status <span class="sort-arrow">↕️</span></th>
                         </tr>
                     </thead>
                     <tbody id="projects-table-body"
                         class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"></tbody>
                 </table>
+                <p id="no-results" class="text-center py-8 text-gray-500 dark:text-gray-400 hidden">No projects match
+                    the selected filters.</p>
             </div>
-
-            <!-- Mobile Powerplants Card List (Phone View - Zero Horizontal Scroll) -->
-            <div id="projects-mobile-cards" class="md:hidden space-y-3"></div>
-
-            <p id="no-results" class="text-center py-8 text-gray-500 dark:text-gray-400 hidden">No projects match the selected filters.</p>
 
         </div>
 
         <footer class="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
             <p>Data sourced from DOE public records.</p>
         </footer>
+    </div>
 
     <!-- Project Detail Modal -->
     <div id="project-modal"
         class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div id="project-modal-content"
-            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl modal-box overflow-y-auto transform scale-95">
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95">
             <div
                 class="sticky top-0 bg-white dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center z-10">
                 <h2 id="modal-title" class="text-xl font-bold text-gray-800 dark:text-gray-100">Project Details</h2>
                 <button id="modal-close-btn"
-                    class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-2xl font-bold transition-colors">&times;</button>
+                    class="text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-3xl">&times;</button>
             </div>
             <div id="modal-body" class="p-6"></div>
         </div>
@@ -614,7 +780,7 @@
                 <h2 id="developer-modal-title" class="text-xl font-bold text-gray-800 dark:text-gray-100">Developer
                     Details</h2>
                 <button id="developer-modal-close-btn"
-                    class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-2xl font-bold transition-colors">&times;</button>
+                    class="text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-3xl">&times;</button>
             </div>
             <div id="developer-modal-body" class="p-6 overflow-y-auto"></div>
         </div>
@@ -630,7 +796,7 @@
                 <h2 id="comparison-modal-title" class="text-xl font-bold text-gray-800 dark:text-gray-100 italic">
                     Developer Comparison</h2>
                 <button id="comparison-modal-close-btn"
-                    class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-2xl font-bold transition-colors">&times;</button>
+                    class="text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white text-3xl">&times;</button>
             </div>
             <div id="comparison-modal-body" class="p-6 overflow-y-auto overflow-x-hidden"></div>
         </div>
@@ -660,7 +826,7 @@
             3: { total: 6677.2, byTech: { "GEOTHERMAL": 27.218, "IMPOUNDING HYDROPOWER": 300, "PUMPED-STORAGE HYDROPOWER": 6350 } }, // Match image results
             4: { total: 10195.5, byYear: { 2026: 3000, 2027: 3500, 2028: 2500, 2029: 1195.5 } }, // Match image results
             5: { total: 3300 }, // GEA-5 Offshore wind target
-            6: { total: 230 }   // Special Auction Biomass WTE target
+            6: { total: 230 }   // GEA-6 Biomass WTE target
         };
 
         const projects = [
@@ -682,14 +848,14 @@
             { id: 1009.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Calatagan Wind Power Project", developer: "Solar Philippines Calatagan Corporation", capacity: 30.0, lat: 13.8294, lon: 120.6358, price: 4.1998, isCod: false },
             { id: 1010.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Balaoi and Caunayan Wind Power Project", developer: "Bayog Wind Power Corp.", capacity: 160.0, lat: 18.6333, lon: 120.75, price: 4.4386, isCod: true },
             { id: 1011.0, gea: 1, year: 2025, grid: "Luzon", type: "WIND", facilityName: "Kalayaan 2 Wind Power Project", developer: "CleanTech Global Renewables, Inc.", capacity: 100.8, price: 4.6368, isCod: false, lat: 14.836708333333336, lon: 121.2821125 },
-            { id: 1013.0, gea: 1, year: 2025, grid: "Visayas", type: "WIND", facilityName: "Nabas 2 Wind Power Project", developer: "PetroWind Energy, Inc.", capacity: 13.2, lat: 11.8833, lon: 121.95, price: 5.7555, isCod: false },
+            { id: 1013.0, gea: 1, year: 2025, grid: "Visayas", type: "WIND", facilityName: "Nabas 2 Wind Power Project", developer: "PetroWind Energy, Inc.", capacity: 13.2, lat: 11.8833, lon: 121.95, price: 5.7555, isCod: true },
             { id: 2101.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Bongabon Solar Power Project", developer: "Nuevasol Energy Corp.", capacity: 30.933, price: 4.3999, isCod: true, lat: 16.260225000000002, lon: 120.91390000000001 },
             { id: 2002.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Gamu Solar Power Project", developer: "Megasol Energy I Inc.", capacity: 41.244, lat: 17.06, lon: 121.84, price: 4.3999, isCod: true },
             { id: 2003.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Dalayap Solar Power Project", developer: "Citicore Solar Tarlac 2, Inc.", capacity: 5.88, lat: 15.36, lon: 120.62, price: 4.4043, isCod: true },
             { id: 2004.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Armenia Solar Power Project", developer: "Citicore Solar Tarlac 1, Inc.", capacity: 7.1, lat: 15.48, lon: 120.6, price: 4.4043, isCod: true },
             { id: 2005.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Tuy 4 Batangas Solar Power Project", developer: "Greencore Power Solution 2, Inc.", capacity: 50.0, lat: 14.02, lon: 120.73, price: 4.4043, isCod: false },
             { id: 2006.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Bolbok 2 Solar Power Project ", developer: "Greencore Power Solution 2,", capacity: 75.0, lat: 13.78, lon: 121.07, price: 4.4043, isCod: false },
-            { id: 2007.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Arayat 3A Solar Power Project", developer: "Citicore Solar Pampanga 1, Inc.", capacity: 30.0, lat: 15.15, lon: 120.77, price: 4.4043, isCod: false },
+            { id: 2007.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Arayat 3A Solar Power Project", developer: "Citicore Solar Pampanga 1, Inc.", capacity: 30.0, lat: 15.15, lon: 120.77, price: 4.4043, isCod: true },
             { id: 2008.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Pagbilao 1 Solar Power Project", developer: "Citicore Solar Quezon, Inc.", capacity: 70.5, lat: 13.97, lon: 121.75, price: 4.4043, isCod: false },
             { id: 2009.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Pagbilao 2 Solar Power Project", developer: "Citicore Solar Quezon. Inc.", capacity: 27.0, lat: 13.97, lon: 121.75, price: 4.4043, isCod: false },
             { id: 2010.0, gea: 2, year: 2024, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Sta. Barbara 1 Solar Power Project", developer: "Citicore Solar Pangasinan, Inc.", capacity: 90.0, lat: 15.99, lon: 120.4, price: 4.4043, isCod: false },
@@ -707,10 +873,10 @@
             { id: 2022.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Apulid Solar Project", developer: "Liberty Solar Energy Corporation", capacity: 49.9, lat: 15.67, lon: 120.58, price: 3.8788, isCod: false },
             { id: 2023.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Development of 50 MW Ground Mounted Solar Power Plant", developer: "Wyn Power Corporation", capacity: 50.0, lat: 15.5, lon: 120.8, price: 4.1, isCod: false },
             { id: 2024.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "San Pablo Solar Power Project Phase 1", developer: "Solar Valley Energy  Solutions Inc", capacity: 49.4, lat: 17.08, lon: 121.8, price: 4.1998, isCod: false },
-            { id: 2025.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Cordon Solar Power Project", developer: "Greenergy For Global. Inc. Doing Business Under G4G", capacity: 49.0, lat: 16.7, lon: 121.48, price: 4.2346, isCod: false },
+            { id: 2025.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Cordon Solar Power Project", developer: "Greenergy For Global. Inc. Doing Business Under G4G", capacity: 49.0, lat: 16.7, lon: 121.48, price: 4.2346, isCod: true },
             { id: 2026.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Bongabon Solar Power Project", developer: "Greentech Solar Energy Inc.", capacity: 18.75, lat: 15.63, lon: 121.15, price: 4.238, isCod: true },
             { id: 2027.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "San Pablo Solar 1", developer: "San Pablo Renewable Energy Corporation", capacity: 43.75, lat: 17.08, lon: 121.8, price: 4.3898, isCod: false },
-            { id: 2028.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Limbauan  Solar Power Project", developer: "BKS Green Energy Corp.", capacity: 28.0, lat: 17.09, lon: 121.78, price: 4.4043, isCod: false },
+            { id: 2028.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Limbauan  Solar Power Project", developer: "BKS Green Energy Corp.", capacity: 28.0, lat: 17.09, lon: 121.78, price: 4.4043, isCod: true },
             { id: 2029.0, gea: 2, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Bugallon Solar Power Project", developer: "PetroGreen Energy Corporation", capacity: 18.56, lat: 15.93, lon: 120.21, price: 4.4043, isCod: false },
             { id: 2030.0, gea: 2, year: 2025, grid: "Luzon", type: "ROOF-MOUNTED SOLAR", facilityName: "Pampanga Rollforming Plant Solar PV System", developer: "Phinma Solar Energy Corporation", capacity: 0.18, lat: 15.08, lon: 120.7, price: 4.8738, isCod: false },
             { id: 2031.0, gea: 2, year: 2025, grid: "Luzon", type: "ROOF-MOUNTED SOLAR", facilityName: " warehouse #20C Teknik Compound Solar PV System", developer: "Phinma Solar Energy Corporation", capacity: 0.13, lat: 14.73, lon: 120.95, price: 4.8738, isCod: false },
@@ -764,7 +930,7 @@
             { id: 2084.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "lxus Bugallon Solar Power Project", developer: "lxus Solar Energy Corp", capacity: 274.735, lat: 15.93, lon: 120.21, price: 4.0985, isCod: false },
             { id: 2085.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "San Pablo Solar Power Project Phase 2", developer: "Solar Valley Energy  Solutions Inc", capacity: 79.04, lat: 17.08, lon: 121.8, price: 4.1998, isCod: false },
             { id: 2086.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Santa Rosa Nueva Ecija 3 Solar Power Project", developer: "Solar Philippines  Commercial Rooftop Projects, Inc.", capacity: 20.0, lat: 15.48, lon: 120.96, price: 4.2999, isCod: false },
-            { id: 2087.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Pasuquin-Burgos 100MW Solar Power Plant", developer: "Energy Logics Philippines Inc.", capacity: 49.0, lat: 18.43, lon: 120.63, price: 4.4, isCod: false },
+            { id: 2087.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Pasuquin-Burgos 100MW Solar Power Plant", developer: "Energy Logics Philippines Inc.", capacity: 49.0, lat: 18.43, lon: 120.63, price: 4.4, isCod: true },
             { id: 2088.0, gea: 2, year: 2026, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Linglingay Solar Power Project", developer: "Xyris Energy Corporation", capacity: 70.14, lat: 16.69, lon: 121.49, price: 4.4043, isCod: false },
             { id: 2089.0, gea: 2, year: 2026, grid: "Luzon", type: "FLOATING SOLAR", facilityName: "NKS One Floating Solar Power Project", developer: "NKS Solar One Inc.", capacity: 90.0, lat: 14.24, lon: 121.18, price: 5.0988, isCod: false },
             { id: 2090.0, gea: 2, year: 2026, grid: "Luzon", type: "ONSHORE WIND", facilityName: "Quezon Wind Power Project", developer: "Quezon Wind Energy Corp.", capacity: 239.985, lat: 14.75, lon: 121.58, price: 5.2513, isCod: false },
@@ -782,13 +948,13 @@
             { id: 2096.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Ajuy 1 Solar Power Plant Project", developer: "Joy-NostaIg Solaris Incorporated", capacity: 14.0, lat: 11.17, lon: 123.02, price: 4.3543, isCod: false },
             { id: 2097.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Luca Solar Power Project", developer: "Apolaki Eight Inc.", capacity: 40.0, lat: 10.38, lon: 123.64, price: 4.3553, isCod: false },
             { id: 2098.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Silay 2b Solar Power Project", developer: "Citicore Solar Negros Occidental 2. Inc.", capacity: 20.0, lat: 10.8, lon: 122.97, price: 4.4043, isCod: false },
-            { id: 2099.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Toledo Solar Power Project", developer: "Citicore Solar Cebu, Inc.", capacity: 49.0, lat: 10.38, lon: 123.64, price: 4.4043, isCod: false },
+            { id: 2099.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Toledo Solar Power Project", developer: "Citicore Solar Cebu, Inc.", capacity: 49.0, lat: 10.38, lon: 123.64, price: 4.4043, isCod: true },
             { id: 2100.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Silay 2a Solar Power Project", developer: "Citicore Solar Negros Occidental 2, Inc.", capacity: 30.0, lat: 10.8, lon: 122.97, price: 4.4043, isCod: false },
-            { id: 2106.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Silay Solar Power Project", developer: "Citicore Solar Negros Occidental, Inc.", capacity: 50.0, price: 4.4043, isCod: false, lat: 10.843876923076921, lon: 123.11472307692307 },
+            { id: 2106.0, gea: 2, year: 2026, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Silay Solar Power Project", developer: "Citicore Solar Negros Occidental, Inc.", capacity: 50.0, price: 4.4043, isCod: true, lat: 10.843876923076921, lon: 123.11472307692307 },
             { id: 2102.0, gea: 2, year: 2026, grid: "Visayas", type: "ONSHORE WIND", facilityName: "lloilo CW 1 Wind Power Project", developer: "Citicore Wind Energy Corporation", capacity: 152.0, lat: 11.1, lon: 123.0, price: 5.6888, isCod: false },
             { id: 2103.0, gea: 2, year: 2026, grid: "Visayas", type: "ONSHORE WIND", facilityName: "Gemini Wind Power Project", developer: "Gemini Wind Energy Corp.", capacity: 200.0, lat: 10.5, lon: 123.0, price: 5.7531, isCod: false },
             { id: 2104.0, gea: 2, year: 2026, grid: "Visayas", type: "ONSHORE WIND", facilityName: "Bago City Wind Power Project", developer: "FirstMaxpower  international Corporation", capacity: 150.0, lat: 10.53, lon: 122.84, price: 5.848, isCod: false },
-            { id: 3011.0, gea: 3, year: 2026, grid: "Luzon", type: "GEOTHERMAL", facilityName: "Tanawon Geothermal Power Plant - Unit 1", developer: "Bac-Man Geothermal Inc.", capacity: 21.573, lat: 13.04, lon: 123.91, price: 7.6441, isCod: false },
+            { id: 3011.0, gea: 3, year: 2026, grid: "Luzon", type: "GEOTHERMAL", facilityName: "Tanawon Geothermal Power Plant - Unit 1", developer: "Bac-Man Geothermal Inc.", capacity: 21.573, lat: 13.04, lon: 123.91, price: 7.6441, isCod: true },
             { id: 3107.0, gea: 3, year: 2025, grid: "Mindanao", type: "GEOTHERMAL", facilityName: "Mindanao 3 Binary Geothermal Power Plant Expansion Project Phase 3 - Unit 1", developer: "Energy Development Corporation", capacity: 3.669, price: 5.1092, isCod: false },
             { id: 3012.0, gea: 3, year: 2026, grid: "Visayas", type: "GEOTHERMAL", facilityName: "Bago Binary Geothermal Power Plant - Unit 1", developer: "Energy Development Corporation", capacity: 5.645, lat: 10.55, lon: 123.01, price: 7.6441, isCod: false },
             { id: 3001.0, gea: 3, year: 2030, grid: "Luzon", type: "IMPOUNDING HYDRO", facilityName: "Gened 1 Hydroelectric Power Project", developer: "Pan Pacific Renewable Power Phils. Corp.", capacity: 150.0, lat: 17.91, lon: 121.28, price: 4.5, isCod: false },
@@ -801,9 +967,9 @@
             { id: 3008.0, gea: 3, year: 2031, grid: "Luzon", type: "PUMPED STORAGE HYDRO", facilityName: "Maton Pumped Storage Hydroelectric Power Project", developer: "Pan Pacific Renewable Power Phils. Corp.", capacity: 2000.0, lat: 17.8, lon: 121.2, price: 3.5, isCod: false },
             { id: 3009.0, gea: 3, year: 2035, grid: "Visayas", type: "PUMPED STORAGE HYDRO", facilityName: "Aklan Pumped Storage Hydroelectric Power Project", developer: "San Roque Hydropower Inc.", capacity: 250.0, lat: 11.6, lon: 122.25, price: 3.7319, isCod: false },
             { id: 25.0, gea: 4, year: 2025, grid: "Visayas", type: "GROUND-MOUNTED SOLAR", facilityName: "Vista Alegre Solar Power Project", developer: "Amatera Renewable Energy Corporation", capacity: 50.1, lat: 10.777, lon: 123.0149, price: 4.43, isCod: false },
-            { id: 5.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Ecopark Isla Solar Power Plant", developer: "Ecopark Energy of Valenzuela Corp.", capacity: 4.035, lat: 14.73, lon: 120.98, price: 3.98, isCod: false },
-            { id: 6.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Ecopark Tagalag Solar Power Plant", developer: "Ecopark Energy of Valenzuela Corp.", capacity: 14.7, lat: 14.75, lon: 120.97, price: 3.98, isCod: false },
-            { id: 29.0, gea: 4, year: 2025, grid: "Luzon", type: "ROOF-MOUNTED SOLAR", facilityName: "Naic Solar Rooftop Power Project", developer: "Joy-Nostalg Solaris Incorporated", capacity: 4.95, lat: 14.321, lon: 120.765, price: 5.68, isCod: false },
+            { id: 5.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Ecopark Isla Solar Power Plant", developer: "Ecopark Energy of Valenzuela Corp.", capacity: 4.035, lat: 14.73, lon: 120.98, price: 3.98, isCod: true },
+            { id: 6.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Ecopark Tagalag Solar Power Plant", developer: "Ecopark Energy of Valenzuela Corp.", capacity: 14.7, lat: 14.75, lon: 120.97, price: 3.98, isCod: true },
+            { id: 29.0, gea: 4, year: 2025, grid: "Luzon", type: "ROOF-MOUNTED SOLAR", facilityName: "Naic Solar Rooftop Power Project", developer: "Joy-Nostalg Solaris Incorporated", capacity: 4.95, lat: 14.321, lon: 120.765, price: 5.68, isCod: true },
             { id: 11.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Magahis Solar Power Plant Project; Phase I", developer: "Tuy Solar Power Corporation", capacity: 170.0, lat: 14.024, lon: 120.731, price: 4.1983, isCod: false },
             { id: 21.0, gea: 4, year: 2025, grid: "Luzon", type: "GROUND-MOUNTED SOLAR", facilityName: "Sual Solar Power Plant", developer: "Renovable Earth Corp.", capacity: 33.0, lat: 16.071, lon: 120.095, price: 4.25, isCod: false },
             { id: 1.0, gea: 4, year: 2025, grid: "Luzon", type: "IRESS", facilityName: "Bolbok 3 Solar Power Project; Phase 1", developer: "Citicore Renewable Energy Corporation", capacity: 50.0, lat: 13.9687, lon: 120.7276, price: 5.4028, isCod: false },
@@ -936,7 +1102,6 @@
         const exportBtn = document.getElementById('export-csv');
         const resetBtn = document.getElementById('reset-filters');
         const tableBody = document.getElementById('projects-table-body');
-        const mobileCardsContainer = document.getElementById('projects-mobile-cards');
         const totalCapacityEl = document.getElementById('total-capacity');
         const estInvestmentEl = document.getElementById('est-investment');
         const co2AvoidedEl = document.getElementById('co2-avoided');
@@ -979,16 +1144,31 @@
 
         // --- STATE & INSTANCES ---
         let sortState = { column: 'year', direction: 'asc' };
-        let map, markerLayer;
+        let map, markerLayer, tileLayer;
         let currentFilteredProjects = [];
         let geaRoundChart, techDistChart, targetChart, timelineChart, priceTrendChart, gridDistChart, timelinessChart;
         let devModalChart, comparisonChart1, comparisonChart2;
 
         // --- FUNCTIONS ---
 
+        function updateTileLayer(isDark) {
+            if (!map) return;
+            if (tileLayer) {
+                map.removeLayer(tileLayer);
+            }
+            const tileUrl = isDark
+                ? 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+                : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
+            tileLayer = L.tileLayer(tileUrl, {
+                maxZoom: 18,
+                attribution: '&copy; <a href="https://www.esri.com/" target="_blank">Esri</a> &mdash; Esri, DeLorme, NAVTEQ, TomTom, USGS, METI'
+            }).addTo(map);
+        }
+
         function initMap() {
             map = L.map('map').setView([12.8797, 121.7740], 6);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+            const isDark = document.documentElement.classList.contains('dark');
+            updateTileLayer(isDark);
             markerLayer = L.layerGroup().addTo(map);
         }
 
@@ -1123,7 +1303,7 @@
 
             // Table layout for comparison to prevent horizontal scroll issues
             let html = `
-                <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm -mx-1 sm:mx-0">
+                <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
@@ -1188,59 +1368,23 @@
 
         function renderTable(projectList) {
             tableBody.innerHTML = '';
-            mobileCardsContainer.innerHTML = '';
             noResultsEl.classList.toggle('hidden', projectList.length > 0);
-
             projectList.forEach(project => {
-                const status = getProjectStatus(project);
-                let statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 rounded-full">ON-GOING</span>';
-                if (status === 'terminated') {
-                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-950/80 dark:text-red-400 rounded-full">TERMINATED</span>';
-                } else if (status === 'operation') {
-                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-300 rounded-full">IN OPERATION</span>';
-                } else if (status === 'delayed') {
-                    statusHtml = '<span class="inline-block whitespace-nowrap px-2.5 py-1 text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 rounded-full">DELAYED</span>';
-                }
-
-                // 1. Desktop Table Row (Visible >= md)
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700';
                 row.dataset.projectId = project.id;
                 row.dataset.projectGea = project.gea;
-                row.innerHTML = `<td class="px-2 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">GEA-${project.gea}</td><td class="px-2 py-3 text-xs font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">${project.year}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">${project.grid}</td><td class="px-2 py-3 text-xs text-gray-500 dark:text-gray-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis" title="${project.type}">${project.type}</td><td class="px-2.5 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 break-words leading-snug">${project.facilityName}</td><td class="px-2 py-3 text-xs text-gray-600 dark:text-gray-400 break-words leading-snug">${project.developer}</td><td class="px-2 py-3 text-xs font-bold text-gray-900 dark:text-gray-100 text-right whitespace-nowrap">${formatNumber(project.capacity)}</td><td class="px-2 py-3 text-xs font-bold text-indigo-600 dark:text-indigo-400 text-right whitespace-nowrap">${project.price ? formatNumber(project.price, 4) : 'N/A'}</td><td class="px-2 py-3 text-center text-xs whitespace-nowrap">${statusHtml}</td>`;
+                const status = getProjectStatus(project);
+                let statusHtml = '<span class="px-2 py-1 text-[10px] font-bold bg-blue-100 text-blue-800 rounded-full">ON-GOING</span>';
+                if (status === 'terminated') {
+                    statusHtml = '<span class="px-2 py-1 text-[10px] font-bold bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400 rounded-full">TERMINATED</span>';
+                } else if (status === 'operation') {
+                    statusHtml = '<span class="px-2 py-1 text-[10px] font-bold bg-green-100 text-green-800 rounded-full">IN OPERATION</span>';
+                } else if (status === 'delayed') {
+                    statusHtml = '<span class="px-2 py-1 text-[10px] font-bold bg-amber-100 text-amber-800 rounded-full">DELAYED</span>';
+                }
+                row.innerHTML = `<td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">GEA-${project.gea}</td><td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">${project.year}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${project.grid}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 truncate" title="${project.type}">${project.type}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 truncate" title="${project.facilityName}">${project.facilityName}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 truncate" title="${project.developer}">${project.developer}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-medium text-right">${formatNumber(project.capacity)}</td><td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-medium text-right">${project.price ? formatNumber(project.price, 4) : 'N/A'}</td><td class="px-2 py-4 whitespace-nowrap text-center text-sm">${statusHtml}</td>`;
                 tableBody.appendChild(row);
-
-                // 2. Mobile Powerplant Card (Visible < md - Zero Horizontal Scroll)
-                const card = document.createElement('div');
-                card.className = 'p-3.5 bg-gray-50 dark:bg-gray-900/60 rounded-xl border border-gray-200 dark:border-gray-700/80 shadow-sm active:scale-[0.99] transition-all cursor-pointer space-y-2';
-                card.onclick = () => showProjectModal(project.id, project.gea);
-                card.innerHTML = `
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="space-y-1 pr-1 min-w-0 flex-1">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 rounded">GEA-${project.gea} • ${project.year}</span>
-                                <span class="px-2 py-0.5 text-[10px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded">${project.grid}</span>
-                            </div>
-                            <h4 class="font-bold text-gray-900 dark:text-gray-100 text-sm leading-snug break-words">${project.facilityName}</h4>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">🏢 ${project.developer}</p>
-                        </div>
-                        <div class="shrink-0 pt-0.5">
-                            ${statusHtml}
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-200 dark:border-gray-700/60 text-xs">
-                        <div>
-                            <span class="text-gray-400 font-medium text-[10px] uppercase tracking-wider block">Technology</span>
-                            <span class="font-semibold text-gray-800 dark:text-gray-200 truncate block">${project.type}</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-gray-400 font-medium text-[10px] uppercase tracking-wider block">Capacity / Bid</span>
-                            <span class="font-bold text-indigo-600 dark:text-indigo-400 text-sm block">${formatNumber(project.capacity)} MW</span>
-                            <span class="text-gray-500 dark:text-gray-400 text-[11px] block">${project.price ? formatNumber(project.price, 4) + ' ₱/kWh' : 'N/A'}</span>
-                        </div>
-                    </div>
-                `;
-                mobileCardsContainer.appendChild(card);
             });
         }
 
@@ -1888,6 +2032,7 @@
                 sunIcon.classList.remove('hidden');
                 moonIcon.classList.add('hidden');
             }
+            updateTileLayer(isDark);
             // Re-render charts for color update
             applyFiltersAndSort();
         }
